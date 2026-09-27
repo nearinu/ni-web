@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dank Memes | Near Inu ($NI)</title>
+  <meta name="description" content="The Near Inu community meme dump, straight from the trenches. Download, post, repeat. The dog is long compute." />
+  <link rel="icon" type="image/png" href="assets/ni-logo.png" />
+
+  <!-- Fonts: Archivo Black, Space Grotesk, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: '#00ed97',
+              hover: '#1affaa',
+              dim: '#00c77e',
+              glow: 'rgba(0, 237, 151, 0.35)',
+              border: 'rgba(0, 237, 151, 0.28)',
+              soft: 'rgba(0, 237, 151, 0.12)'
+            },
+            lime: '#00ed97',
+            'lime-soft': '#33ffb5',
+            ink: {
+              DEFAULT: '#0b0b0c',
+              soft: '#09090b',
+              chip: '#131316',
+              surface: '#111215',
+              subtle: '#18191e',
+              card: '#141519',
+              50: '#f4f4f1',
+              100: '#e5e5df',
+              200: '#d7d8d1',
+              300: '#b8b9b2',
+              400: '#a7a8a1',
+              500: '#8c8e86',
+              600: '#6f716a',
+              700: '#505149',
+              800: '#32332e',
+              900: '#1b1b19'
+            }
+          },
+          fontFamily: {
+            display: ['"Archivo Black"', 'sans-serif'],
+            sans: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          animation: {
+            'particle-drift': 'particleDrift var(--particle-duration, 8s) ease-in-out var(--particle-delay, 0s) infinite'
+          },
+          keyframes: {
+            particleDrift: {
+              '0%, 100%': { transform: 'translate(0px, 0px) scale(1)' },
+              '25%': { transform: 'translate(calc(var(--particle-drift-x, 0px) * 0.5), -22px) scale(1.15)' },
+              '50%': { transform: 'translate(var(--particle-drift-x, 0px), -42px) scale(0.9)' },
+              '75%': { transform: 'translate(calc(var(--particle-drift-x, 0px) * 0.25), -20px) scale(1.1)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #0b0b0c;
+      color: #f4f4f1;
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+    }
+    ::selection {
+      background: #00ed97;
+      color: #0b0b0c;
+    }
+
+    /* Ambient animated cyber aurora background canvas */
+    .cyber-aurora-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      opacity: 0.65;
+    }
+    .aurora-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      will-change: transform, opacity;
+    }
+    .aurora-blob-1 {
+      top: -10%;
+      left: 15%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 237, 151, 0.16) 0%, rgba(0, 237, 151, 0) 70%);
+      animation: auroraDrift1 22s ease-in-out infinite alternate;
+    }
+    .aurora-blob-2 {
+      top: 35%;
+      right: -5%;
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(0, 199, 126, 0.12) 0%, rgba(11, 11, 12, 0) 70%);
+      animation: auroraDrift2 26s ease-in-out infinite alternate;
+    }
+    .aurora-blob-3 {
+      bottom: -15%;
+      left: 20%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(0, 237, 151, 0.14) 0%, rgba(0, 237, 151, 0) 70%);
+      animation: auroraDrift3 28s ease-in-out infinite alternate;
+    }
+    @keyframes auroraDrift1 {
+      0% { transform: translate(0px, 0px) scale(1); }
+      50% { transform: translate(80px, 60px) scale(1.15); }
+      100% { transform: translate(-60px, 100px) scale(0.95); }
+    }
+    @keyframes auroraDrift2 {
+      0% { transform: translate(0px, 0px) scale(1); }
+      50% { transform: translate(-100px, -80px) scale(1.2); }
+      100% { transform: translate(-40px, 60px) scale(0.9); }
+    }
+    @keyframes auroraDrift3 {
+      0% { transform: translate(0px, 0px) scale(1); }
+      50% { transform: translate(-70px, -50px) scale(1.1); }
+      100% { transform: translate(60px, -90px) scale(1.05); }
+    }
+
+    /* Film grain overlay */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .hero-glow-radial {
+      background: radial-gradient(ellipse 65% 55% at 50% 20%, rgba(0, 237, 151, 0.1), transparent 70%);
+    }
+
+    /* Custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0b0c;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e2025;
+      border-radius: 9999px;
+      border: 1px solid rgba(0, 237, 151, 0.2);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00ed97;
+    }
+
+    /* Modal transition */
+    .modal-backdrop {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Modern top scroll progress indicator */
+    #scrollProgress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2.5px;
+      background: linear-gradient(90deg, #00ed97, #85ffd1, #00ed97);
+      background-size: 200% 100%;
+      z-index: 100;
+      width: 0%;
+      box-shadow: 0 0 10px rgba(0, 237, 151, 0.8);
+      transition: width 0.1s ease-out;
+    }
+
+    /* Floating Back to Top Button */
+    #backToTopBtn {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 80;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(16px) scale(0.9);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #backToTopBtn.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Live copy toast popup */
+    #toastNotification {
+      position: fixed;
+      bottom: 84px;
+      right: 28px;
+      z-index: 9999;
+      transform: translateY(120%);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Soundwave equalizer bars */
+    .eq-bar {
+      width: 2px;
+      height: 10px;
+      background-color: #00ed97;
+      border-radius: 9999px;
+      animation: eqBounce 1s ease-in-out infinite alternate;
+    }
+    .eq-bar:nth-child(2) { animation-delay: 0.2s; height: 14px; }
+    .eq-bar:nth-child(3) { animation-delay: 0.4s; height: 8px; }
+    .eq-bar:nth-child(4) { animation-delay: 0.1s; height: 12px; }
+    @keyframes eqBounce {
+      0% { transform: scaleY(0.3); opacity: 0.5; }
+      100% { transform: scaleY(1.3); opacity: 1; }
+    }
+    .sound-muted .eq-bar {
+      animation: none;
+      transform: scaleY(0.2);
+      opacity: 0.3;
+    }
+
+    /* NEAR Logo Model Signature Corner Brackets */
+    .cyber-bracket {
+      position: relative;
+    }
+    .cyber-bracket::before,
+    .cyber-bracket::after {
+      content: "";
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 10;
+      background-size: contain;
+      background-repeat: no-repeat;
+      filter: drop-shadow(0 0 6px rgba(0, 237, 151, 0.65));
+    }
+    .cyber-bracket::before {
+      top: -1px;
+      left: -1px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='%2300ed97'%3E%3Cpath d='M0 28 L0 14 C0 6.27 6.27 0 14 0 L28 0 L22 4.5 L14 4.5 C8.75 4.5 4.5 8.75 4.5 14 L4.5 22 Z'/%3E%3C/svg%3E");
+    }
+    .cyber-bracket::after {
+      bottom: -1px;
+      right: -1px;
+      transform: rotate(180deg);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='%2300ed97'%3E%3Cpath d='M0 28 L0 14 C0 6.27 6.27 0 14 0 L28 0 L22 4.5 L14 4.5 C8.75 4.5 4.5 8.75 4.5 14 L4.5 22 Z'/%3E%3C/svg%3E");
+    }
+    .cyber-bracket:hover::before {
+      transform: scale(1.15);
+      filter: drop-shadow(0 0 12px rgba(0, 237, 151, 0.95)) drop-shadow(0 0 4px #85ffd1);
+    }
+    .cyber-bracket:hover::after {
+      transform: rotate(180deg) scale(1.15);
+      filter: drop-shadow(0 0 12px rgba(0, 237, 151, 0.95)) drop-shadow(0 0 4px #85ffd1);
+    }
+
+    /* Neo-Brutalism & Masonry Gallery Styles from Reference */
+    :root {
+      --brand: #00ed97;
+      --brand-soft: #85ffd1;
+      --brand-dark: #008f5a;
+      --card-border: rgba(0, 237, 151, 0.22);
+      --card-border-solid: #000000;
+    }
+
+    .gallery-hero {
+      text-align: center;
+      padding: 110px 20px 25px;
+      position: relative;
+    }
+
+    .gallery-title {
+      font-family: 'Archivo Black', sans-serif;
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      margin-bottom: 12px;
+      color: #f4f4f1;
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+    .gallery-title span { color: #00ed97; }
+
+    .gallery-subtitle {
+      color: #8c8e86;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      line-height: 1.5;
+      max-width: 680px;
+      margin: 0 auto 16px;
+    }
+
+    .meme-count-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 800;
+      color: #00ed97;
+      background: #111215;
+      border: 2px solid rgba(0, 237, 151, 0.35);
+      padding: 5px 16px;
+      border-radius: 9999px;
+      box-shadow: 0 4px 20px rgba(0, 237, 151, 0.15);
+    }
+
+    /* Sticky Search & Filter Controls */
+    .controls-wrapper {
+      position: sticky;
+      top: 64px;
+      z-index: 40;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 14px 20px;
+      margin-bottom: 30px;
+      background: rgba(11, 11, 12, 0.88);
+    }
+
+    .controls-inner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    .controls-inner input[type="search"] {
+      background: #18191e;
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      color: #f4f4f1;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-family: 'JetBrains Mono', monospace;
+      outline: none;
+      width: 340px;
+      max-width: 100%;
+      box-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+      transition: all 0.2s ease;
+    }
+    .controls-inner input[type="search"]:focus {
+      border-color: #00ed97;
+      box-shadow: 0 0 16px rgba(0, 237, 151, 0.3);
+    }
+
+    .controls-inner .ctrl-btn {
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      background: #00ed97;
+      color: #0b0b0c;
+      border: 2px solid #000;
+      padding: 10px 18px;
+      border-radius: 12px;
+      box-shadow: 3px 3px 0px #000;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .controls-inner .ctrl-btn:hover {
+      background: #85ffd1;
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0px #000;
+    }
+    .controls-inner .ctrl-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0px 0px 0px #000;
+    }
+
+    /* Masonry Gallery Grid */
+    .gallery-container {
+      max-width: 1560px;
+      margin: 0 auto;
+      padding: 0 20px 20px;
+    }
+
+    .gallery-grid {
+      column-count: 4;
+      column-gap: 20px;
+    }
+
+    @media (max-width: 1400px) { .gallery-grid { column-count: 3; } }
+    @media (max-width: 900px)  { .gallery-grid { column-count: 2; column-gap: 14px; } }
+    @media (max-width: 540px)  { .gallery-grid { column-count: 1; } }
+
+    .meme-card {
+      background: #111215;
+      border: 3px solid #000;
+      border-bottom-width: 5px;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      display: inline-block;
+      width: 100%;
+      position: relative;
+      cursor: pointer;
+      break-inside: avoid;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+      box-shadow: 4px 4px 0px #000;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .meme-card.loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .meme-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 6px 8px 0px #000, 0 0 24px rgba(0, 237, 151, 0.2);
+      border-color: #00ed97;
+      z-index: 10;
+    }
+
+    .meme-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .meme-card:hover img {
+      transform: scale(1.025);
+    }
+
+    .meme-id-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(11, 11, 12, 0.9);
+      border: 1px solid rgba(0, 237, 151, 0.4);
+      color: #00ed97;
+      font-size: 0.75rem;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 3px 9px;
+      border-radius: 8px;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+      pointer-events: none;
+    }
+
+    .meme-card-title-bar {
+      padding: 12px 14px;
+      background: #15161b;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .meme-card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: #f4f4f1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .img-action-btn {
+      background: rgba(24, 25, 30, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #f4f4f1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+    .img-action-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: #00ed97;
+      color: #00ed97;
+      transform: translateY(-2px);
+    }
+
+    .img-dl-btn {
+      background: #00ed97 !important;
+      border: 1px solid #00ed97 !important;
+      color: #0b0b0c !important;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0, 237, 151, 0.35) !important;
+    }
+    .img-dl-btn:hover {
+      background: #85ffd1 !important;
+      transform: scale(1.08) !important;
+      box-shadow: 0 4px 14px rgba(0, 237, 151, 0.55) !important;
+    }
+
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 80px 20px;
+      color: #8c8e86;
+      font-size: 1.3rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+    }
+
+    /* Pagination Controls */
+    .pagination-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      margin: 40px auto 20px;
+      padding-bottom: 20px;
+      max-width: 600px;
+    }
+
+    .page-btn {
+      background: #18191e;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      color: #f4f4f1;
+      padding: 9px 18px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #000;
+      transition: all 0.15s ease-in-out;
+    }
+    .page-btn:not(:disabled):hover {
+      background: #00ed97;
+      color: #0b0b0c;
+      border-color: #00ed97;
+      transform: translateY(-2px);
+      box-shadow: 5px 5px 0px #000;
+    }
+    .page-btn:not(:disabled):active {
+      transform: translateY(2px);
+      box-shadow: 0px 0px 0px #000;
+    }
+    .page-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      box-shadow: 2px 2px 0px #000;
+    }
+
+    .page-info {
+      font-size: 0.95rem;
+      font-weight: 700;
+      background: #18191e;
+      padding: 8px 18px;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 3px 3px 0px #000;
+      font-family: 'JetBrains Mono', monospace;
+      color: #f4f4f1;
+    }
+    .page-info input {
+      width: 50px;
+      padding: 3px 6px;
+      text-align: center;
+      border-radius: 8px;
+      border: 1px solid #00ed97;
+      font-family: inherit;
+      font-weight: 800;
+      outline: none;
+      background: #0b0b0c;
+      color: #00ed97;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 11, 12, 0.94);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s ease;
+    }
+    .lightbox.active { opacity: 1; visibility: visible; }
+
+    .lightbox-media {
+      max-width: 90vw;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 18px;
+      border: 3px solid rgba(0, 237, 151, 0.4);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 237, 151, 0.2);
+      background: #000;
+      transform: scale(0.95);
+      transition: transform 0.25s ease;
+    }
+    .lightbox.active .lightbox-media { transform: scale(1); }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #18191e;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      color: #f4f4f1;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.15s ease;
+      z-index: 1001;
+      box-shadow: 3px 3px 0px #000;
+    }
+    .lightbox-nav:hover {
+      background: #00ed97;
+      color: #0b0b0c;
+      border-color: #00ed97;
+      transform: translateY(-50%) scale(1.08);
+      box-shadow: 5px 5px 0px #000;
+    }
+    .lightbox-prev { left: 24px; }
+    .lightbox-next { right: 24px; }
+
+    .lightbox-header {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      display: flex;
+      gap: 10px;
+      z-index: 1001;
+      flex-wrap: wrap;
+    }
+
+    .lb-btn {
+      padding: 7px 14px;
+      border-radius: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 0.85rem;
+      background: #18191e;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      color: #f4f4f1;
+      cursor: pointer;
+      transition: all 0.15s;
+      box-shadow: 2px 2px 0px #000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .lb-btn:hover {
+      background: #00ed97;
+      color: #0b0b0c;
+      border-color: #00ed97;
+      transform: translateY(-2px);
+      box-shadow: 4px 4px 0px #000;
+    }
+    .lb-btn.close {
+      background: #ff4747;
+      color: white;
+      border-color: #ff4747;
+    }
+    .lb-btn.close:hover {
+      background: #ff1c1c;
+      border-color: #ff1c1c;
+    }
+
+    .lightbox-footer {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #18191e;
+      padding: 8px 20px;
+      border-radius: 12px;
+      border: 2px solid rgba(0, 237, 151, 0.4);
+      font-weight: 800;
+      color: #00ed97;
+      box-shadow: 3px 3px 0px #000;
+      font-size: 0.9rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    @media screen and (max-width: 860px) {
+      .lightbox-nav { width: 44px; height: 44px; font-size: 18px; }
+      .lightbox-prev { left: 10px; }
+      .lightbox-next { right: 10px; }
+      .lightbox-header { top: 12px; right: 12px; gap: 6px; }
+      .lb-btn { padding: 5px 10px; font-size: 0.78rem; }
+    }
+  </style>
+</head>
+<body class="relative min-h-screen antialiased bg-ink text-ink-50">
+
+  <!-- Ambient Animated Cyber Aurora Background Mesh -->
+  <div class="cyber-aurora-bg" aria-hidden="true">
+    <div class="aurora-blob aurora-blob-1"></div>
+    <div class="aurora-blob aurora-blob-2"></div>
+    <div class="aurora-blob aurora-blob-3"></div>
+  </div>
+
+  <!-- Scroll Progress Bar -->
+  <div id="scrollProgress"></div>
+
+  <!-- Global Toast Notification -->
+  <div id="toastNotification" class="flex items-center gap-3 rounded-xl border border-brand/40 bg-ink-chip/95 px-4 py-3 font-mono text-xs text-ink-100 shadow-[0_8px_30px_rgba(0,0,0,0.8)] backdrop-blur-xl">
+    <span class="flex size-6 items-center justify-center rounded-full bg-brand/20 text-brand">✓</span>
+    <span id="toastMessage">Contract address copied!</span>
+  </div>
+
+  <!-- Floating Back to Top Pill Button -->
+  <button id="backToTopBtn" onclick="scrollToTop()" type="button" aria-label="Scroll back to top" class="group flex items-center gap-2 rounded-full border border-brand/35 bg-ink-chip/90 px-3.5 py-2 font-mono text-xs text-brand shadow-[0_4px_24px_rgba(0,237,151,0.25)] backdrop-blur-md hover:bg-brand hover:text-ink hover:scale-105 active:scale-95 transition-all cursor-pointer">
+    <svg class="size-3.5 transition-transform group-hover:-translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+    <span class="font-bold tracking-wider uppercase text-[10.5px]">Top</span>
+  </button>
+
+  <!-- ======================================================== -->
+  <!-- FLOATING PARTICLES                                       -->
+  <!-- ======================================================== -->
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0 z-0 overflow-hidden h-[800px]">
+    <span class="absolute rounded-full bg-brand/50 animate-particle-drift" style="left:72.7%;top:40%;width:4px;height:4px;opacity:0.35;--particle-duration:9.5s;--particle-delay:1.2s;--particle-drift-x:24px"></span>
+    <span class="absolute rounded-full bg-brand/40 animate-particle-drift" style="left:18.6%;top:18%;width:5px;height:5px;opacity:0.45;--particle-duration:7.2s;--particle-delay:2.3s;--particle-drift-x:38px"></span>
+    <span class="absolute rounded-full bg-white/30 animate-particle-drift" style="left:33.7%;top:55%;width:3px;height:3px;opacity:0.4;--particle-duration:10.5s;--particle-delay:0.5s;--particle-drift-x:-18px"></span>
+    <span class="absolute rounded-full bg-brand/60 animate-particle-drift" style="left:88.1%;top:28%;width:4.5px;height:4.5px;opacity:0.5;--particle-duration:8.0s;--particle-delay:3.1s;--particle-drift-x:20px"></span>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- FIXED HEADER                                             -->
+  <!-- ======================================================== -->
+  <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center border-b border-white/5 bg-ink/75 backdrop-blur-xl">
+    <div class="mx-auto w-full px-4 sm:px-6 md:px-8 max-w-[1240px] flex items-center justify-between gap-2 sm:gap-4 lg:grid lg:grid-cols-[1fr_auto_1fr]">
+      
+      <!-- Brand & Ticker -->
+      <div class="col-start-1 flex items-center gap-3 justify-self-start min-w-0">
+        <a class="flex items-center gap-2.5 text-ink-50 group flex-none" href="index.html">
+          <img alt="Near Inu Icon" width="36" height="36" class="block rounded-full border-2 border-brand transition-transform group-hover:scale-105" src="assets/ni-logo.png" />
+          <span class="flex flex-col gap-[2px] leading-none">
+            <span class="font-display text-sm sm:text-base tracking-[-0.01em]">NEAR<span class="text-brand"> INU</span></span>
+            <span class="font-mono text-[9px] sm:text-[9.5px] tracking-[0.14em] text-ink-600 uppercase">Long compute</span>
+          </span>
+        </a>
+        <div class="hidden sm:block">
+          <span class="flex items-center gap-2 rounded-full border border-white/10 bg-ink-chip px-3 py-1.5 font-mono text-[11.5px] whitespace-nowrap">
+            <span class="h-1.5 w-1.5 rounded-full bg-brand animate-pulse"></span>
+            <span class="text-ink-500">$NEAR</span>
+            <span class="text-brand font-semibold">$5.82</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Navigation Pill Bar (Desktop) -->
+      <nav class="col-start-2 hidden shrink-0 items-center gap-1 rounded-full border border-white/10 bg-ink-chip p-1.5 backdrop-blur-sm lg:flex">
+        <a href="index.html" class="relative rounded-full px-3.5 py-2 font-mono text-[12.5px] text-ink-400 hover:text-ink-50 transition-colors">Home</a>
+        <a href="index.html#vault" class="relative rounded-full px-3.5 py-2 font-mono text-[12.5px] text-ink-400 hover:text-ink-50 transition-colors">Vault</a>
+        <a href="index.html#how-it-works" class="relative rounded-full px-3.5 py-2 font-mono text-[12.5px] text-ink-400 hover:text-ink-50 transition-colors">How It Works</a>
+        <a href="index.html#how" class="relative rounded-full px-3.5 py-2 font-mono text-[12.5px] text-ink-400 hover:text-ink-50 transition-colors">How to Buy</a>
+        <a href="memes.html" class="relative rounded-full px-3.5 py-2 font-mono text-[12.5px] text-ink-50 bg-white/10 transition-colors flex items-center gap-1.5">
+          <span>Memes</span>
+          <span class="h-1.5 w-1.5 rounded-full bg-brand"></span>
+        </a>
+      </nav>
+
+      <!-- Right CTAs -->
+      <div class="col-start-3 flex items-center gap-1.5 sm:gap-2 justify-self-end flex-nowrap">
+        <!-- Interactive Cyber Ambient Sound Button -->
+        <button id="soundToggleBtn" onclick="toggleAmbientSound()" type="button" aria-label="Toggle cyber music" title="Toggle cyber synthwave music" class="flex size-8 sm:size-9 items-center justify-center rounded-full border border-white/10 bg-ink-chip text-ink-400 hover:text-brand hover:border-brand/40 transition-all sound-muted flex-none">
+          <div class="flex items-center gap-0.5">
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+          </div>
+        </button>
+
+        <!-- X / Twitter (Visible on desktop & tablet) -->
+        <a href="https://x.com/nearinucom" target="_blank" rel="noopener noreferrer" title="Follow on X" class="hidden sm:flex size-9 items-center justify-center rounded-full border border-white/10 bg-ink-chip text-ink-400 hover:text-brand hover:border-brand/40 transition-all flex-none">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="h-3.5 w-3.5"><path d="M18.9 2H22l-7.1 8.1L23.3 22h-6.6l-5.2-6.8L5.6 22H2.4l7.6-8.7L1 2h6.8l4.7 6.2L18.9 2Zm-1.1 18h1.8L7.3 3.9H5.5L17.8 20Z"/></svg>
+        </a>
+
+        <!-- Telegram (Visible on desktop & tablet) -->
+        <a href="https://t.me/nearinu" target="_blank" rel="noopener noreferrer" title="Join Telegram Community" class="hidden sm:flex size-9 items-center justify-center rounded-full border border-white/10 bg-ink-chip text-ink-400 hover:text-brand hover:border-brand/40 transition-all flex-none">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"></path></svg>
+        </a>
+
+        <!-- Trade $NI Button -->
+        <a href="https://nearly.trade/ni-2.nearlytrade.near" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-1.5 sm:gap-2.5 rounded-full font-display bg-brand text-ink hover:bg-lime-soft hover:shadow-[0_10px_30px_rgba(0,237,151,0.3)] py-1.5 pr-1.5 pl-3 sm:pl-[20px] text-xs sm:text-[14px] transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] flex-none">
+          <span>Trade $NI</span>
+          <span class="relative flex size-6 sm:size-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-ink text-brand">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="size-3 sm:size-3.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </span>
+        </a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu" class="flex lg:hidden size-8 sm:size-9 items-center justify-center rounded-full border border-white/10 bg-ink-chip text-ink-400 hover:text-brand hover:border-brand/40 transition-all flex-none">
+          <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobileDrawer" class="hidden lg:hidden absolute top-16 inset-x-0 bg-ink-surface/95 backdrop-blur-2xl border-b border-white/10 p-6 flex flex-col gap-4 text-center font-mono text-sm shadow-2xl">
+      <a href="index.html" onclick="toggleMobileMenu()" class="py-2 text-ink-300 hover:text-brand">Home</a>
+      <a href="index.html#vault" onclick="toggleMobileMenu()" class="py-2 text-ink-300 hover:text-brand">Reward Vault</a>
+      <a href="index.html#how-it-works" onclick="toggleMobileMenu()" class="py-2 text-ink-300 hover:text-brand">How It Works</a>
+      <a href="index.html#how" onclick="toggleMobileMenu()" class="py-2 text-ink-300 hover:text-brand">How to Buy</a>
+      <a href="memes.html" onclick="toggleMobileMenu()" class="py-2 text-brand">Memes</a>
+
+      <!-- Social row inside mobile drawer -->
+      <div class="flex items-center justify-center gap-3 pt-2 border-t border-white/10">
+        <a href="https://x.com/nearinucom" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-full border border-white/10 bg-ink-chip px-4 py-2 text-xs text-ink-300 hover:text-brand">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="size-3.5"><path d="M18.9 2H22l-7.1 8.1L23.3 22h-6.6l-5.2-6.8L5.6 22H2.4l7.6-8.7L1 2h6.8l4.7 6.2L18.9 2Zm-1.1 18h1.8L7.3 3.9H5.5L17.8 20Z"/></svg>
+          <span>Twitter / X</span>
+        </a>
+        <a href="https://t.me/nearinu" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-full border border-white/10 bg-ink-chip px-4 py-2 text-xs text-ink-300 hover:text-brand">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="size-3.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"></path></svg>
+          <span>Telegram</span>
+        </a>
+      </div>
+
+      <a href="https://nearly.trade/ni-2.nearlytrade.near" target="_blank" class="mt-1 py-2.5 rounded-full bg-brand text-ink font-display font-bold">Trade $NI on nearly.trade</a>
+    </div>
+  </header>
+
+  <!-- ======================================================== -->
+  <!-- MEMES HERO HEADER (Neo-Brutalism / Cyberpunk Style)       -->
+  <!-- ======================================================== -->
+  <header class="gallery-hero hero-glow-radial">
+    <h1 class="gallery-title">Near Inu <span>Memes</span></h1>
+    <div class="gallery-subtitle">The official Near Inu meme & art vault on NEAR. 50+ community artworks, search, filter, copy link, and share the compute!</div>
+    <span class="meme-count-badge" id="memeCount">Loading...</span>
+  </header>
+
+  <!-- CONTROLS BAR (Search, Shuffle, Quick Filters) -->
+  <div class="controls-wrapper">
+    <div class="controls-inner">
+      <input type="search" id="searchInput" placeholder="Search memes (e.g. #7, visor, rewards, trade)..." autocomplete="off">
+      <button class="ctrl-btn" id="shuffleBtn">🎲 Shuffle</button>
+    </div>
+  </div>
+
+  <!-- MASONRY GALLERY CONTAINER -->
+  <main class="gallery-container">
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </main>
+
+  <!-- PAGINATION CONTROLS -->
+  <div class="pagination-controls" id="paginationControls"></div>
+
+  <!-- FULLSCREEN LIGHTBOX (Neo-Brutalism / Cyberpunk) -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-header">
+      <button class="lb-btn" id="lbCopy">📋 Copy Link</button>
+      <button class="lb-btn" id="lbDownload">⬇ Download</button>
+      <button class="lb-btn close" id="lbClose">✕ Close</button>
+    </div>
+
+    <button class="lightbox-nav lightbox-prev" id="lbPrev" aria-label="Previous meme">❮</button>
+    <img class="lightbox-media" id="lbImg" src="" alt="Near Inu Meme full size">
+    <video class="lightbox-media" id="lbVid" controls playsinline loop style="display:none"></video>
+    <button class="lightbox-nav lightbox-next" id="lbNext" aria-label="Next meme">❯</button>
+
+    <div class="lightbox-footer" id="lbCounter">1 / 1</div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- FOOTER (Exact artificialinu.com Clone)                   -->
+  <!-- ======================================================== -->
+  <footer class="mt-20">
+    <div class="relative overflow-hidden border-t border-white/10">
+      <!-- Full-bleed Parallax / Perspective Image -->
+      <img alt="Near Inu in Tokyo Cyber District" loading="lazy" class="absolute inset-0 h-full w-full object-cover object-[center_35%]" src="assets/footer-paralax.jpg" />
+      
+      <!-- Gradient overlay matching artificialinu.com: from-ink/70 via-ink/30 to-transparent -->
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/90 from-[5%] via-ink/40 via-[55%] to-transparent"></div>
+
+      <!-- Main Footer Content Container (aligned right, large padding) -->
+      <div class="relative flex flex-col items-end gap-6 px-6 md:px-8 py-24 sm:py-[104px] sm:pr-14 text-right">
+        
+        <!-- Big Tagline -->
+        <!-- Live Status Pill with pulsing green dot -->
+        <div class="inline-flex items-center gap-2.5 rounded-full border border-brand/35 bg-ink/85 px-4 py-1.5 backdrop-blur-md shadow-lg">
+          <span class="h-2 w-2 rounded-full bg-brand animate-pulse-glow"></span>
+          <span class="font-mono text-[11px] font-semibold text-brand tracking-wider uppercase">NEAR SHARDING TERMINAL ACTIVE · BLOCK <span id="footerBlockNum">142,891,048</span></span>
+        </div>
+
+        <h2 class="text-balance font-display text-[clamp(38px,4.6vw,66px)] leading-[0.96] tracking-[-0.025em] text-ink-50 drop-shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
+          Long compute.<br/>
+          <span class="text-brand">Ride with Near Inu.</span>
+        </h2>
+
+        <!-- Action Button Clusters (Stacked rows) -->
+        <div class="flex flex-col items-end gap-3">
+          
+          <!-- Row 1: Trade $NI & Follow on X -->
+          <div class="flex flex-wrap justify-end gap-3">
+            <a href="https://nearly.trade/ni-2.nearlytrade.near" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-2.5 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] bg-brand text-ink hover:bg-lime-soft hover:shadow-[0_10px_30px_rgba(0,237,151,0.35)] py-2 pr-2 pl-[24px] text-[15px] font-bold">
+              <span>Trade $NI</span>
+              <span class="relative flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-ink text-brand">
+                <svg viewBox="0 0 16 16" fill="none" class="absolute size-3.5 transition-all duration-300 ease-out group-hover:translate-x-3.5 group-hover:-translate-y-3.5 group-hover:opacity-0"><path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="absolute size-3.5 -translate-x-3.5 translate-y-3.5 opacity-0 transition-all duration-300 ease-out group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100"><path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </a>
+
+            <a href="https://x.com/nearinucom" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-2.5 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] border border-brand/40 bg-ink/90 text-brand hover:bg-white/5 px-[24px] py-3 text-[15px]">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="h-3.5 w-3.5"><path d="M18.9 2H22l-7.1 8.1L23.3 22h-6.6l-5.2-6.8L5.6 22H2.4l7.6-8.7L1 2h6.8l4.7 6.2L18.9 2Zm-1.1 18h1.8L7.3 3.9H5.5L17.8 20Z"/></svg>
+              <span>Follow on X</span>
+            </a>
+
+            <!-- Telegram button -->
+            <a href="https://t.me/nearinu" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-2.5 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] border border-brand/40 bg-ink/90 text-brand hover:bg-white/5 px-[24px] py-3 text-[15px]">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"></path></svg>
+              <span>Telegram</span>
+            </a>
+          </div>
+
+          <!-- Row 2: Secondary Nav Pills -->
+          <div class="flex flex-wrap justify-end gap-3">
+            <a href="index.html#how-it-works" class="group inline-flex items-center justify-center gap-2 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] border border-white/20 bg-ink/90 text-ink-50 hover:border-brand hover:text-brand px-[22px] py-2.5 text-[14px]">
+              How It Works
+            </a>
+            <a href="index.html#how" class="group inline-flex items-center justify-center gap-2 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] border border-white/20 bg-ink/90 text-ink-50 hover:border-brand hover:text-brand px-[22px] py-2.5 text-[14px]">
+              How to Buy
+            </a>
+            <a href="index.html#faq" class="group inline-flex items-center justify-center gap-2 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] border border-white/20 bg-ink/90 text-ink-50 hover:border-brand hover:text-brand px-[22px] py-2.5 text-[14px]">
+              FAQ
+            </a>
+            <a href="memes.html" class="group inline-flex items-center justify-center gap-2 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] border border-white/20 bg-ink/90 text-ink-50 hover:border-brand hover:text-brand px-[22px] py-2.5 text-[14px]">
+              <span>Memes</span>
+              <span class="rounded-full bg-brand/20 px-1.5 py-0.2 font-mono text-[10px] text-brand">Dank</span>
+            </a>
+            <a href="https://dexscreener.com/near/refv2-ni-2.nearlytrade.near:wrap.near:10000" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-2 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] border border-white/20 bg-ink/90 text-ink-50 hover:border-brand hover:text-brand px-[22px] py-2.5 text-[14px]">
+              Dexscreener
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Token Contract Cards -->
+        <div class="mt-2 flex w-full max-w-[620px] flex-col gap-3.5 text-left">
+          
+          <!-- Card 1: $NI Token -->
+          <div class="flex flex-col gap-4 border border-white/10 bg-ink-chip/95 backdrop-blur-md px-6 py-5 sm:py-5.5 transition-all hover:border-brand/50 hover:shadow-[0_0_24px_rgba(0,237,151,0.18)] sm:flex-row sm:items-center sm:justify-between sm:gap-6 rounded-2xl">
+            <div class="flex flex-col gap-1.5 sm:min-w-44 flex-1">
+              <div class="flex items-center gap-2.5 leading-none">
+                <span class="font-display text-[20px] text-ink-50">$NI</span>
+                <span class="rounded-full bg-brand/10 border border-brand/30 px-2.5 py-0.5 font-mono text-[10px] text-brand uppercase tracking-wider font-semibold">75% NEAR REWARDS</span>
+              </div>
+              <span class="font-mono text-[11px] text-ink-500">Near Inu token · nearly.trade</span>
+            </div>
+            <span class="font-mono text-[13px] text-ink-200 truncate select-all sm:px-2">near-inu.nearly.trade</span>
+            <button onclick="copyFooterAddress('near-inu.nearly.trade', this)" type="button" class="cursor-pointer flex-none self-start sm:self-auto rounded-full bg-brand px-5 py-2 font-display text-[13px] text-ink transition-all duration-200 ease-out hover:scale-[1.05] hover:bg-lime-soft active:scale-[0.95] font-bold shadow">
+              <span>Copy</span>
+            </button>
+          </div>
+
+          <!-- Card 2: $NEAR Token -->
+          <div class="flex flex-col gap-4 border border-white/10 bg-ink-chip/95 backdrop-blur-md px-6 py-5 sm:py-5.5 transition-all hover:border-brand/50 hover:shadow-[0_0_24px_rgba(0,237,151,0.18)] sm:flex-row sm:items-center sm:justify-between sm:gap-6 rounded-2xl">
+            <div class="flex flex-col gap-1.5 sm:min-w-44 flex-1">
+              <div class="flex items-center gap-2.5 leading-none">
+                <span class="font-display text-[20px] text-brand">$NEAR</span>
+                <span class="rounded-full bg-white/10 border border-white/15 px-2.5 py-0.5 font-mono text-[10px] text-ink-300 uppercase tracking-wider font-semibold">NATIVE L1</span>
+              </div>
+              <span class="font-mono text-[11px] text-ink-500">Protocol native token</span>
+            </div>
+            <span class="font-mono text-[13px] text-ink-200 truncate select-all sm:px-2">wrap.near</span>
+            <button onclick="copyFooterAddress('wrap.near', this)" type="button" class="cursor-pointer flex-none self-start sm:self-auto rounded-full bg-brand px-5 py-2 font-display text-[13px] text-ink transition-all duration-200 ease-out hover:scale-[1.05] hover:bg-lime-soft active:scale-[0.95] font-bold shadow">
+              <span>Copy</span>
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between text-[11px] font-mono text-ink-500 px-1">
+            <span>*Match character-by-character on DEX router.</span>
+            <span class="text-brand">100% LP Burned & Locked</span>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Sub-footer Bottom Bar -->
+    <div class="border-t border-white/5 bg-ink py-8">
+      <div class="mx-auto w-full px-6 md:px-8 max-w-[1240px] flex flex-col gap-6">
+        
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-5 text-center font-mono text-xs text-ink-500 sm:text-left">
+          <span class="flex items-center gap-2.5">
+            <img alt="Near Inu Icon" width="24" height="24" class="block rounded-full border border-brand/50" src="assets/ni-logo.png" />
+            <span class="text-ink-300 font-semibold">© 2026 Near Inu ($NI) · Launched on NEAR</span>
+          </span>
+
+          <span class="flex flex-wrap items-center justify-center gap-5">
+            <a href="https://nearly.trade/ni-2.nearlytrade.near" target="_blank" rel="noopener noreferrer" class="hover:text-brand transition-colors">Trade $NI</a>
+            <a href="index.html#vault" class="hover:text-brand transition-colors">Vault</a>
+            <a href="index.html#how-it-works" class="hover:text-brand transition-colors">How It Works</a>
+            <a href="index.html#how" class="hover:text-brand transition-colors">How to Buy</a>
+            <a href="index.html#faq" class="hover:text-brand transition-colors">FAQ</a>
+            <a href="memes.html" class="hover:text-brand transition-colors">Memes</a>
+            <a href="https://dexscreener.com/near/refv2-ni-2.nearlytrade.near:wrap.near:10000" target="_blank" rel="noopener noreferrer" class="hover:text-brand transition-colors">Dexscreener</a>
+            <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="hover:text-brand transition-colors text-ink-400 flex items-center gap-1 cursor-pointer">
+              <span>Top ↑</span>
+            </button>
+          </span>
+        </div>
+
+        <p class="border-t border-white/5 pt-5 font-mono text-[11px] leading-relaxed text-ink-600 max-w-5xl">
+          <strong class="text-ink-400">$NI is a decentralized community meme token launching on nearly.trade on NEAR Protocol with 1,000,000,000 (1B NI) total supply.</strong> $NI has no intrinsic equity, promises, or formal investment advisory representations. A flat 4% buy and sell tax applies to transactions: 75% (3% net) is automatically distributed to token holders in native NEAR coin, and 25% (1% net) is directed to the creator for ongoing growth and ecosystem integration. Cryptocurrency trading carries capital risk. Only participate with what you can manage. The token contract address above is the single authoritative source to verify against.
+        </p>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- LOAD MEME CATALOG -->
+  <script src="memes/meme_list.js"></script>
+
+  <!-- ======================================================== -->
+  <!-- JAVASCRIPT: DYNAMIC MASONRY GALLERY, SEARCH & LIGHTBOX   -->
+  <!-- ======================================================== -->
+  <script>
+    // ── Configuration & State ──
+    const grid = document.getElementById('galleryGrid');
+    const searchInput = document.getElementById('searchInput');
+    const countBadge = document.getElementById('memeCount');
+    const paginationControls = document.getElementById('paginationControls');
+
+    let currentVisible = [];
+    let lightboxIndex = 0;
+
+    // Pagination State
+    let currentPage = 1;
+    const ITEMS_PER_PAGE = 32;
+
+    // Meme Catalog with safe fallback
+    const ALL_MEMES = (typeof MEMES !== 'undefined' && Array.isArray(MEMES) && MEMES.length > 0)
+      ? MEMES
+      : Array.from({ length: 40 }, (_, i) => ({
+          id: i + 1,
+          file: `ni-art-${i + 1}.jpg`,
+          title: `Near Inu Artwork #${i + 1}`,
+          tag: 'near inu, ni, near, compute, sharding'
+        }));
+
+    // ── Initializing & Rendering Gallery ──
+    function initGallery(initialPage = 1) {
+      renderGallery(ALL_MEMES, initialPage);
+    }
+
+    function renderGallery(memes, page = 1) {
+      if (!grid) return;
+      grid.innerHTML = '';
+      currentVisible = memes;
+      currentPage = page;
+      if (countBadge) countBadge.textContent = `${memes.length} Meme${memes.length !== 1 ? 's' : ''}`;
+
+      if (memes.length === 0) {
+        grid.innerHTML = '<div class="no-results">No memes found for this search. 🐕💨</div>';
+        if (paginationControls) paginationControls.innerHTML = '';
+        return;
+      }
+
+      const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+      const endIndex = startIndex + ITEMS_PER_PAGE;
+      const paginatedMemes = memes.slice(startIndex, endIndex);
+
+      paginatedMemes.forEach((m, i) => {
+        const card = document.createElement('div');
+        card.className = 'meme-card';
+        card.style.transitionDelay = `${Math.min(i * 0.03, 0.4)}s`;
+
+        const isVideo = m.file.endsWith('.mp4') || m.file.endsWith('.webm');
+        const memeId = m.id || (startIndex + i + 1);
+        const altText = m.title || `Near Inu Meme #${memeId}`;
+
+        const mediaTag = isVideo
+          ? `<video src="memes/${m.file}" muted loop playsinline aria-label="${altText}"></video>`
+          : `<img src="memes/${m.file}" alt="${altText}" loading="lazy" decoding="async" title="${altText}" onerror="this.src='assets/ni-logo.png'">`;
+
+        card.innerHTML = `
+          <div class="meme-id-badge">#${memeId}</div>
+          <div style="position: relative;">
+            ${mediaTag}
+          </div>
+          <div class="meme-card-title-bar">
+            <span class="meme-card-title" title="${m.title || 'Near Inu #' + memeId}">${m.title || 'Near Inu #' + memeId}</span>
+            <div class="card-actions-row" onclick="event.stopPropagation()">
+              <button class="img-action-btn card-copy-btn" title="Copy Image Link" aria-label="Copy">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
+              <button class="img-action-btn img-dl-btn card-download-btn" title="Download Artwork" aria-label="Download">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+        `;
+
+        if (isVideo) {
+          const vid = card.querySelector('video');
+          if (vid) {
+            card.addEventListener('mouseenter', () => vid.play());
+            card.addEventListener('mouseleave', () => vid.pause());
+          }
+        }
+
+        const copyBtn = card.querySelector('.card-copy-btn');
+        if (copyBtn) {
+          copyBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const url = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'memes/' + m.file;
+            navigator.clipboard.writeText(url).then(() => {
+              showToastNotification('📋 Meme link copied!');
+            });
+          });
+        }
+
+        const dlBtn = card.querySelector('.card-download-btn');
+        if (dlBtn) {
+          dlBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const a = document.createElement('a');
+            a.href = `memes/${m.file}`;
+            a.download = m.file;
+            a.click();
+          });
+        }
+
+        const absoluteIndex = startIndex + i;
+        card.addEventListener('click', () => openLightbox(absoluteIndex));
+        grid.appendChild(card);
+
+        requestAnimationFrame(() => {
+          setTimeout(() => card.classList.add('loaded'), 40);
+        });
+      });
+
+      renderPagination(memes.length);
+    }
+
+    function changePage(newPage) {
+      renderGallery(currentVisible, newPage);
+      window.scrollTo({ top: 180, behavior: 'smooth' });
+
+      const url = new URL(window.location);
+      url.searchParams.set('page', newPage);
+      window.history.pushState({}, '', url);
+    }
+
+    function renderPagination(totalItems) {
+      if (!paginationControls) return;
+      const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+      paginationControls.innerHTML = '';
+
+      if (totalPages <= 1) return;
+
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'page-btn';
+      prevBtn.textContent = '❮ Prev';
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.onclick = () => {
+        if (currentPage > 1) changePage(currentPage - 1);
+      };
+      paginationControls.appendChild(prevBtn);
+
+      const pageInfo = document.createElement('div');
+      pageInfo.className = 'page-info';
+
+      const textPrefix = document.createElement('span');
+      textPrefix.textContent = 'Page';
+
+      const pageInput = document.createElement('input');
+      pageInput.type = 'number';
+      pageInput.min = 1;
+      pageInput.max = totalPages;
+      pageInput.value = currentPage;
+
+      pageInput.addEventListener('change', (e) => {
+        let newPage = parseInt(e.target.value, 10);
+        if (isNaN(newPage) || newPage < 1) newPage = 1;
+        if (newPage > totalPages) newPage = totalPages;
+        e.target.value = newPage;
+        changePage(newPage);
+      });
+
+      const textSuffix = document.createElement('span');
+      textSuffix.textContent = `of ${totalPages}`;
+
+      pageInfo.appendChild(textPrefix);
+      pageInfo.appendChild(pageInput);
+      pageInfo.appendChild(textSuffix);
+      paginationControls.appendChild(pageInfo);
+
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'page-btn';
+      nextBtn.textContent = 'Next ❯';
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.onclick = () => {
+        if (currentPage < totalPages) changePage(currentPage + 1);
+      };
+      paginationControls.appendChild(nextBtn);
+    }
+
+    function filterAndSearch() {
+      const query = searchInput.value.toLowerCase().trim().replace(/^#/, '');
+
+      const filtered = ALL_MEMES.filter(m => {
+        if (!query) return true;
+        const idStr = String(m.id);
+        const fileStr = (m.file || '').toLowerCase();
+        const titleStr = (m.title || '').toLowerCase();
+        const tagStr = (m.tag || '').toLowerCase();
+        return idStr === query || idStr.includes(query) || fileStr.includes(query) || titleStr.includes(query) || tagStr.includes(query);
+      });
+
+      renderGallery(filtered, 1);
+
+      const url = new URL(window.location);
+      url.searchParams.set('page', 1);
+      if (query) url.searchParams.set('q', query);
+      else url.searchParams.delete('q');
+      window.history.replaceState({}, '', url);
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', filterAndSearch);
+    }
+
+    const shuffleBtn = document.getElementById('shuffleBtn');
+    if (shuffleBtn) {
+      shuffleBtn.addEventListener('click', () => {
+        const shuffled = [...currentVisible].sort(() => Math.random() - 0.5);
+        renderGallery(shuffled, 1);
+
+        const url = new URL(window.location);
+        url.searchParams.set('page', 1);
+        window.history.replaceState({}, '', url);
+      });
+    }
+
+    // ── Fullscreen Lightbox Engine ──
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbVid = document.getElementById('lbVid');
+    const lbCounter = document.getElementById('lbCounter');
+
+    function openLightbox(index) {
+      if (!currentVisible || currentVisible.length === 0) return;
+      lightboxIndex = index;
+      updateLightboxUI();
+      if (lightbox) {
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeLightbox() {
+      if (lightbox) {
+        lightbox.classList.remove('active');
+        if (lbVid) {
+          lbVid.pause();
+          lbVid.src = '';
+        }
+        document.body.style.overflow = '';
+      }
+    }
+
+    function updateLightboxUI() {
+      const m = currentVisible[lightboxIndex];
+      if (!m) return;
+      const isVideo = m.file.endsWith('.mp4') || m.file.endsWith('.webm');
+      const fileUrl = `memes/${m.file}`;
+
+      if (isVideo) {
+        if (lbImg) lbImg.style.display = 'none';
+        if (lbVid) {
+          lbVid.style.display = 'block';
+          lbVid.src = fileUrl;
+          lbVid.play();
+        }
+      } else {
+        if (lbVid) {
+          lbVid.style.display = 'none';
+          lbVid.pause();
+        }
+        if (lbImg) {
+          lbImg.style.display = 'block';
+          lbImg.src = fileUrl;
+        }
+      }
+
+      if (lbCounter) {
+        const memeId = m.id || (lightboxIndex + 1);
+        lbCounter.textContent = `#${memeId} (${lightboxIndex + 1} / ${currentVisible.length})`;
+      }
+    }
+
+    function navLightbox(dir) {
+      if (!currentVisible || currentVisible.length === 0) return;
+      lightboxIndex = (lightboxIndex + dir + currentVisible.length) % currentVisible.length;
+      updateLightboxUI();
+    }
+
+    const lbClose = document.getElementById('lbClose');
+    if (lbClose) lbClose.addEventListener('click', closeLightbox);
+
+    const lbPrev = document.getElementById('lbPrev');
+    if (lbPrev) lbPrev.addEventListener('click', (e) => { e.stopPropagation(); navLightbox(-1); });
+
+    const lbNext = document.getElementById('lbNext');
+    if (lbNext) lbNext.addEventListener('click', (e) => { e.stopPropagation(); navLightbox(1); });
+
+    if (lightbox) {
+      lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+    }
+
+    const lbDownload = document.getElementById('lbDownload');
+    if (lbDownload) {
+      lbDownload.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const m = currentVisible[lightboxIndex];
+        if (!m) return;
+        const a = document.createElement('a');
+        a.href = `memes/${m.file}`;
+        a.download = m.file;
+        a.click();
+      });
+    }
+
+    const lbCopy = document.getElementById('lbCopy');
+    if (lbCopy) {
+      lbCopy.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const m = currentVisible[lightboxIndex];
+        if (!m) return;
+        const url = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + `memes/${m.file}`;
+        navigator.clipboard.writeText(url).then(() => {
+          lbCopy.textContent = '✅ Copied!';
+          setTimeout(() => lbCopy.textContent = '📋 Copy Link', 1500);
+          showToastNotification('📋 Meme link copied!');
+        });
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox || !lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navLightbox(-1);
+      if (e.key === 'ArrowRight') navLightbox(1);
+    });
+
+    // Touch Swipe for mobile lightbox
+    let touchStartX = 0;
+    if (lightbox) {
+      lightbox.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+      lightbox.addEventListener('touchend', e => {
+        let touchEndX = e.changedTouches[0].screenX;
+        if (touchEndX < touchStartX - 50) navLightbox(1);
+        if (touchEndX > touchStartX + 50) navLightbox(-1);
+      }, { passive: true });
+    }
+
+    // Toast notification utility
+    function showToastNotification(msg) {
+      const toast = document.getElementById("toastNotification");
+      const msgElem = document.getElementById("toastMessage");
+      if (toast && msgElem) {
+        msgElem.innerText = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2500);
+      }
+    }
+
+    function copyFooterAddress(text, btnElement) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToastNotification(`Copied: ${text}`);
+        const span = btnElement.querySelector('span');
+        if (span) {
+          const prev = span.innerText;
+          span.innerText = "COPIED! ✓";
+          setTimeout(() => {
+            span.innerText = prev;
+          }, 2000);
+        }
+      });
+    }
+
+    function toggleMobileMenu() {
+      const drawer = document.getElementById("mobileDrawer");
+      if (drawer) {
+        drawer.classList.toggle("hidden");
+      }
+    }
+
+    // Scroll progress bar & floating back to top button
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      const prog = document.getElementById('scrollProgress');
+      if (prog) prog.style.width = scrolled + "%";
+
+      const backToTop = document.getElementById('backToTopBtn');
+      if (backToTop) {
+        if (winScroll > 450) {
+          backToTop.classList.add('visible');
+        } else {
+          backToTop.classList.remove('visible');
+        }
+      }
+    }, { passive: true });
+
+    function scrollToTop() {
+      playCyberBeep(750, 0.08);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Real-time block number update in footer
+    let currentBlock = 142891048;
+    setInterval(() => {
+      currentBlock += 1;
+      const blockElem = document.getElementById("footerBlockNum");
+      if (blockElem) {
+        blockElem.innerText = currentBlock.toLocaleString('en-US');
+      }
+    }, 1200);
+
+    // Web Audio Synthesizer: Generative Cyber Ambient Synthwave & Sound Effects
+    let audioCtx = null;
+    let soundEnabled = false;
+    let ambientMusicTimer = null;
+    let ambientDroneNodes = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) {
+          audioCtx = new AudioContext();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playCyberBeep(freq = 600, duration = 0.08, type = 'sine') {
+      if (!soundEnabled || !audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    // Continuous Generative Cyber Synthwave Music
+    const SYNTH_SCALE = [146.83, 164.81, 174.61, 196.00, 220.00, 261.63, 293.66, 329.63, 349.23, 392.00]; // D Dorian
+
+    function startCyberAmbientMusic() {
+      if (!audioCtx || !soundEnabled) return;
+      try {
+        const droneOsc = audioCtx.createOscillator();
+        const droneGain = audioCtx.createGain();
+        const droneFilter = audioCtx.createBiquadFilter();
+
+        droneOsc.type = 'sawtooth';
+        droneOsc.frequency.setValueAtTime(73.42, audioCtx.currentTime);
+
+        droneFilter.type = 'lowpass';
+        droneFilter.frequency.setValueAtTime(220, audioCtx.currentTime);
+
+        droneGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+        droneGain.gain.linearRampToValueAtTime(0.035, audioCtx.currentTime + 1.5);
+
+        droneOsc.connect(droneFilter);
+        droneFilter.connect(droneGain);
+        droneGain.connect(audioCtx.destination);
+        droneOsc.start();
+
+        ambientDroneNodes = { osc: droneOsc, gain: droneGain };
+
+        let step = 0;
+        ambientMusicTimer = setInterval(() => {
+          if (!soundEnabled || !audioCtx) return;
+
+          const baseFreq = SYNTH_SCALE[step % SYNTH_SCALE.length];
+          const oct = (step % 4 === 0) ? 2 : 1;
+          const freq = baseFreq * oct;
+
+          const noteOsc = audioCtx.createOscillator();
+          const noteGain = audioCtx.createGain();
+          const noteFilter = audioCtx.createBiquadFilter();
+
+          noteOsc.type = (step % 2 === 0) ? 'triangle' : 'sine';
+          noteOsc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+          noteFilter.type = 'bandpass';
+          noteFilter.frequency.setValueAtTime(freq * 1.5, audioCtx.currentTime);
+          noteFilter.Q.setValueAtTime(3, audioCtx.currentTime);
+
+          noteGain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+          noteGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.38);
+
+          noteOsc.connect(noteFilter);
+          noteFilter.connect(noteGain);
+          noteGain.connect(audioCtx.destination);
+
+          noteOsc.start();
+          noteOsc.stop(audioCtx.currentTime + 0.4);
+
+          step = (step + 1) % 16;
+        }, 220);
+
+      } catch (err) {
+        console.error("Audio synth error:", err);
+      }
+    }
+
+    function stopCyberAmbientMusic() {
+      if (ambientMusicTimer) {
+        clearInterval(ambientMusicTimer);
+        ambientMusicTimer = null;
+      }
+      if (ambientDroneNodes) {
+        try {
+          ambientDroneNodes.gain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
+          ambientDroneNodes.osc.stop(audioCtx.currentTime + 0.5);
+        } catch (e) {}
+        ambientDroneNodes = null;
+      }
+    }
+
+    function toggleAmbientSound() {
+      initAudio();
+      soundEnabled = !soundEnabled;
+      const btn = document.getElementById("soundToggleBtn");
+      if (btn) {
+        if (soundEnabled) {
+          btn.classList.remove("sound-muted");
+          btn.classList.add("text-brand", "border-brand/40");
+          showToastNotification("Cyber synthwave music playing ⚡🎶");
+          startCyberAmbientMusic();
+          playCyberBeep(750, 0.12);
+        } else {
+          btn.classList.add("sound-muted");
+          btn.classList.remove("text-brand", "border-brand/40");
+          showToastNotification("Music muted");
+          stopCyberAmbientMusic();
+        }
+      }
+    }
+
+    // Initial load
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialPage = parseInt(urlParams.get('page'), 10) || 1;
+    initGallery(initialPage);
+
+    let searchQuery = urlParams.get('q');
+    if (searchQuery && searchInput) {
+      searchInput.value = searchQuery;
+      filterAndSearch();
+    }
+  </script>
+</body>
+</html>

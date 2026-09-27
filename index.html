@@ -1,0 +1,2917 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Near Inu | The onchain $NEAR community</title>
+  <meta name="description" content="$NI is paired with NEAR Protocol. Every trade feeds the Reward Vault, and every fee is redistributed 75% to holders in native Near coin and 25% to creator." />
+  <link rel="icon" type="image/png" href="assets/ni-logo.png" />
+
+  <!-- Fonts: Archivo Black, Space Grotesk, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: '#00ed97',
+              hover: '#1affaa',
+              dim: '#00c77e',
+              glow: 'rgba(0, 237, 151, 0.35)',
+              border: 'rgba(0, 237, 151, 0.28)',
+              soft: 'rgba(0, 237, 151, 0.12)'
+            },
+            lime: '#00ed97',
+            'lime-soft': '#33ffb5',
+            ink: {
+              DEFAULT: '#0b0b0c',
+              soft: '#09090b',
+              chip: '#131316',
+              surface: '#111215',
+              subtle: '#18191e',
+              card: '#141519',
+              50: '#f4f4f1',
+              100: '#e5e5df',
+              200: '#d7d8d1',
+              300: '#b8b9b2',
+              400: '#a7a8a1',
+              500: '#8c8e86',
+              600: '#6f716a',
+              700: '#505149',
+              800: '#32332e',
+              900: '#1b1b19'
+            }
+          },
+          fontFamily: {
+            display: ['"Archivo Black"', 'sans-serif'],
+            sans: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          animation: {
+            'bob': 'bob 6s ease-in-out infinite',
+            'bob-alt': 'bobAlt 7s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 2.4s ease-out infinite',
+            'fx-glow': 'fxGlow 4.5s ease-in-out infinite',
+            'scan': 'scanLine 4.5s linear infinite',
+            'die-flicker': 'dieFlicker 3s ease-in-out infinite',
+            'marquee': 'marquee 28s linear infinite',
+            'particle-drift': 'particleDrift var(--particle-duration, 8s) ease-in-out var(--particle-delay, 0s) infinite'
+          },
+          keyframes: {
+            bob: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-14px)' }
+            },
+            bobAlt: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-10px) rotate(1.5deg)' }
+            },
+            pulseGlow: {
+              '0%, 100%': { boxShadow: '0 0 0 0 rgba(0, 237, 151, 0.45)' },
+              '50%': { boxShadow: '0 0 0 16px rgba(0, 237, 151, 0)' }
+            },
+            fxGlow: {
+              '0%, 100%': { opacity: '0.65', transform: 'scale(1)' },
+              '50%': { opacity: '0.95', transform: 'scale(1.03)' }
+            },
+            scanLine: {
+              '0%': { transform: 'translateY(-100%)' },
+              '100%': { transform: 'translateY(900%)' }
+            },
+            dieFlicker: {
+              '0%, 100%': { opacity: '0.22' },
+              '50%': { opacity: '0.85' }
+            },
+            marquee: {
+              '0%': { transform: 'translateX(0%)' },
+              '100%': { transform: 'translateX(-50%)' }
+            },
+            particleDrift: {
+              '0%, 100%': { transform: 'translate(0px, 0px) scale(1)' },
+              '25%': { transform: 'translate(calc(var(--particle-drift-x, 0px) * 0.5), -22px) scale(1.15)' },
+              '50%': { transform: 'translate(var(--particle-drift-x, 0px), -42px) scale(0.9)' },
+              '75%': { transform: 'translate(calc(var(--particle-drift-x, 0px) * 0.25), -20px) scale(1.1)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #0b0b0c;
+      color: #f4f4f1;
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+    }
+    ::selection {
+      background: #00ed97;
+      color: #0b0b0c;
+    }
+
+    /* Ambient animated cyber aurora background canvas */
+    .cyber-aurora-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      opacity: 0.65;
+    }
+    .aurora-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      will-change: transform, opacity;
+    }
+    .aurora-blob-1 {
+      top: -10%;
+      left: 15%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 237, 151, 0.16) 0%, rgba(0, 237, 151, 0) 70%);
+      animation: auroraDrift1 22s ease-in-out infinite alternate;
+    }
+    .aurora-blob-2 {
+      top: 35%;
+      right: -5%;
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(0, 199, 126, 0.12) 0%, rgba(11, 11, 12, 0) 70%);
+      animation: auroraDrift2 26s ease-in-out infinite alternate;
+    }
+    .aurora-blob-3 {
+      bottom: -15%;
+      left: 20%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(0, 237, 151, 0.14) 0%, rgba(0, 237, 151, 0) 70%);
+      animation: auroraDrift3 28s ease-in-out infinite alternate;
+    }
+    @keyframes auroraDrift1 {
+      0% { transform: translate(0px, 0px) scale(1); }
+      50% { transform: translate(80px, 60px) scale(1.15); }
+      100% { transform: translate(-60px, 100px) scale(0.95); }
+    }
+    @keyframes auroraDrift2 {
+      0% { transform: translate(0px, 0px) scale(1); }
+      50% { transform: translate(-100px, -80px) scale(1.2); }
+      100% { transform: translate(-40px, 60px) scale(0.9); }
+    }
+    @keyframes auroraDrift3 {
+      0% { transform: translate(0px, 0px) scale(1); }
+      50% { transform: translate(-70px, -50px) scale(1.1); }
+      100% { transform: translate(60px, -90px) scale(1.05); }
+    }
+
+    /* Authentic crypto film grain overlay */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Ambient matrix star background */
+    .hero-glow-radial {
+      background: radial-gradient(ellipse 65% 55% at 50% 30%, rgba(0, 237, 151, 0.12), transparent 70%);
+    }
+
+    /* Grid pattern */
+    .bg-grid-pattern {
+      background-image: linear-gradient(rgba(0, 237, 151, 0.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 237, 151, 0.05) 1px, transparent 1px);
+      background-size: 34px 34px;
+    }
+
+    /* Range slider custom styling */
+    input[type=range] {
+      -webkit-appearance: none;
+      background: #18191e;
+      border-radius: 9999px;
+      height: 8px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 22px;
+      width: 22px;
+      border-radius: 50%;
+      background: #00ed97;
+      cursor: pointer;
+      box-shadow: 0 0 14px rgba(0, 237, 151, 0.7);
+      transition: transform 0.15s ease;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0b0c;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e2025;
+      border-radius: 9999px;
+      border: 1px solid rgba(0, 237, 151, 0.2);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00ed97;
+    }
+
+    /* Scroll reveal transitions */
+    .reveal-item {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-item.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Modern top scroll progress indicator */
+    #scrollProgress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2.5px;
+      background: linear-gradient(90deg, #00ed97, #85ffd1, #00ed97);
+      background-size: 200% 100%;
+      z-index: 100;
+      width: 0%;
+      box-shadow: 0 0 10px rgba(0, 237, 151, 0.8);
+      transition: width 0.1s ease-out;
+    }
+
+    /* Soundwave equalizer bars */
+    .eq-bar {
+      width: 2px;
+      height: 10px;
+      background-color: #00ed97;
+      border-radius: 9999px;
+      animation: eqBounce 1s ease-in-out infinite alternate;
+    }
+    .eq-bar:nth-child(2) { animation-delay: 0.2s; height: 14px; }
+    .eq-bar:nth-child(3) { animation-delay: 0.4s; height: 8px; }
+    .eq-bar:nth-child(4) { animation-delay: 0.1s; height: 12px; }
+    @keyframes eqBounce {
+      0% { transform: scaleY(0.3); opacity: 0.5; }
+      100% { transform: scaleY(1.3); opacity: 1; }
+    }
+    .sound-muted .eq-bar {
+      animation: none;
+      transform: scaleY(0.2);
+      opacity: 0.3;
+    }
+
+    /* Floating Back to Top Button */
+    #backToTopBtn {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 80;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(16px) scale(0.9);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #backToTopBtn.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Live copy toast popup (offset so back-to-top doesn't clash) */
+    #toastNotification {
+      position: fixed;
+      bottom: 84px;
+      right: 28px;
+      z-index: 9999;
+      transform: translateY(120%);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #toastNotification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* FAQ Accordion Transitions */
+    .faq-answer {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease-out, margin-top 0.3s ease-out;
+    }
+    .faq-item.active .faq-answer {
+      max-height: 280px;
+      opacity: 1;
+      margin-top: 14px;
+    }
+    .faq-item.active .faq-chevron {
+      transform: rotate(180deg);
+      color: #00ed97;
+    }
+    .faq-item.active {
+      border-color: rgba(0, 237, 151, 0.45);
+      background-color: rgba(20, 21, 25, 0.95);
+      box-shadow: 0 8px 30px rgba(0, 237, 151, 0.08);
+    }
+
+    /* Modern Glass Card Border Gradient Glow */
+    .glass-border-glow {
+      position: relative;
+    }
+    .glass-border-glow::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(0, 237, 151, 0.4), rgba(255, 255, 255, 0.05) 50%, rgba(0, 237, 151, 0.2));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    /* Modern Preset Pill Button */
+    .preset-pill {
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(24, 25, 30, 0.8);
+      color: #9299a9;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .preset-pill:hover, .preset-pill.active {
+      border-color: #00ed97;
+      color: #00ed97;
+      background: rgba(0, 237, 151, 0.1);
+      box-shadow: 0 0 12px rgba(0, 237, 151, 0.25);
+      transform: translateY(-1px);
+    }
+
+    /* Interactive Holographic Card Glow effect on mouse move */
+    .holo-card {
+      position: relative;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.35s ease;
+    }
+    .holo-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(0, 237, 151, 0.5);
+      box-shadow: 0 16px 40px -10px rgba(0, 237, 151, 0.22), 0 0 0 1px rgba(0, 237, 151, 0.25);
+    }
+    .holo-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 237, 151, 0.08), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .holo-card:hover::after {
+      opacity: 1;
+    }
+
+    /* Ambient dynamic spotlight on body */
+    #cursorSpotlight {
+      pointer-events: none;
+      position: fixed;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 237, 151, 0.045) 0%, transparent 65%);
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      transition: opacity 0.3s ease;
+      will-change: left, top;
+    }
+
+    /* Modern Animated NEAR Logo Aura & Rotating Cyber Rings */
+    @keyframes spinSlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes spinReverse {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+    }
+    @keyframes nearPulseAura {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.6;
+        box-shadow: 0 0 25px rgba(0, 237, 151, 0.4), inset 0 0 15px rgba(0, 237, 151, 0.3);
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 0.95;
+        box-shadow: 0 0 45px rgba(0, 237, 151, 0.75), inset 0 0 25px rgba(0, 237, 151, 0.5);
+      }
+    }
+    .near-glow-aura {
+      animation: nearPulseAura 3s ease-in-out infinite;
+    }
+    .near-ring-orbit {
+      animation: spinSlow 12s linear infinite;
+    }
+    .near-ring-orbit-reverse {
+      animation: spinReverse 8s linear infinite;
+    }
+
+    /* Animated Cyber Gradient Typography */
+    @keyframes textGradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .cyber-gradient-text {
+      background: linear-gradient(135deg, #00ed97 0%, #ffffff 40%, #00ed97 80%, #85ffd1 100%);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textGradientShift 7s ease infinite;
+    }
+
+    /* Radar scanline sweep effect for hero mascot base */
+    @keyframes radarSweep {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .radar-sweep-beam {
+      position: absolute;
+      inset: -50%;
+      background: conic-gradient(from 0deg at 50% 50%, rgba(0, 237, 151, 0.28) 0deg, transparent 60deg, transparent 360deg);
+      border-radius: 50%;
+      animation: radarSweep 8s linear infinite;
+      pointer-events: none;
+    }
+
+    /* Live HUD Telemetry Glitch & Border Glow */
+    .hud-tag {
+      background: rgba(17, 18, 21, 0.82);
+      border: 1px solid rgba(0, 237, 151, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 0 12px rgba(0, 237, 151, 0.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hud-tag:hover {
+      border-color: #00ed97;
+      box-shadow: 0 10px 36px rgba(0, 237, 151, 0.25), inset 0 0 16px rgba(0, 237, 151, 0.15);
+      transform: translateY(-2px);
+    }
+
+    /* Digital Cyber Scanline Overlay for Matrix feel */
+    .cyber-matrix-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(0, 237, 151, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 237, 151, 0.04) 1px, transparent 1px);
+    }
+
+    /* Live Data Stream Indicator Glow */
+    .data-stream-ping {
+      box-shadow: 0 0 16px #00ed97, 0 0 32px rgba(0, 237, 151, 0.4);
+    }
+
+    /* Shimmer animation for key badge pills */
+    @keyframes badgeShimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .badge-shimmer {
+      background: linear-gradient(90deg, rgba(0,237,151,0.08) 0%, rgba(0,237,151,0.28) 50%, rgba(0,237,151,0.08) 100%);
+      background-size: 200% 100%;
+      animation: badgeShimmer 4s ease-in-out infinite;
+    }
+
+    /* NEAR Logo Model Signature Corner Brackets */
+    .cyber-bracket {
+      position: relative;
+    }
+    .cyber-bracket::before,
+    .cyber-bracket::after {
+      content: "";
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 10;
+      background-size: contain;
+      background-repeat: no-repeat;
+      filter: drop-shadow(0 0 6px rgba(0, 237, 151, 0.65));
+    }
+    .cyber-bracket::before {
+      top: -1px;
+      left: -1px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='%2300ed97'%3E%3Cpath d='M0 28 L0 14 C0 6.27 6.27 0 14 0 L28 0 L22 4.5 L14 4.5 C8.75 4.5 4.5 8.75 4.5 14 L4.5 22 Z'/%3E%3C/svg%3E");
+    }
+    .cyber-bracket::after {
+      bottom: -1px;
+      right: -1px;
+      transform: rotate(180deg);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='%2300ed97'%3E%3Cpath d='M0 28 L0 14 C0 6.27 6.27 0 14 0 L28 0 L22 4.5 L14 4.5 C8.75 4.5 4.5 8.75 4.5 14 L4.5 22 Z'/%3E%3C/svg%3E");
+    }
+    .cyber-bracket:hover::before {
+      transform: scale(1.15);
+      filter: drop-shadow(0 0 12px rgba(0, 237, 151, 0.95)) drop-shadow(0 0 4px #85ffd1);
+    }
+    .cyber-bracket:hover::after {
+      transform: rotate(180deg) scale(1.15);
+      filter: drop-shadow(0 0 12px rgba(0, 237, 151, 0.95)) drop-shadow(0 0 4px #85ffd1);
+    }
+
+    /* Cyber Visor Scanline on Meme Cards */
+    .meme-scanline {
+      position: relative;
+      overflow: hidden;
+    }
+    .meme-scanline::after {
+      content: "";
+      position: absolute;
+      top: -100%;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: linear-gradient(to bottom, transparent, rgba(0, 237, 151, 0.3), rgba(0, 237, 151, 0.6), transparent);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .group:hover .meme-scanline::after {
+      opacity: 1;
+      animation: scanlineSweep 1.2s ease-in-out infinite;
+    }
+    @keyframes scanlineSweep {
+      0% { top: -40%; }
+      100% { top: 140%; }
+    }
+
+    /* Live Chart Scrubber HUD Tooltip */
+    #chartTooltip {
+      position: absolute;
+      top: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -4px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      z-index: 30;
+    }
+    #chartTooltip.visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    /* FAQ Active Left Indicator Strip */
+    .faq-item.active {
+      border-left: 3px solid #00ed97 !important;
+      background-color: rgba(22, 24, 29, 0.98) !important;
+      box-shadow: 0 10px 32px rgba(0, 237, 151, 0.12), inset 0 0 20px rgba(0, 237, 151, 0.04) !important;
+    }
+  </style>
+</head>
+<body class="relative min-h-screen antialiased bg-ink text-ink-50">
+
+  <!-- Ambient Animated Cyber Aurora Background Mesh -->
+  <div class="cyber-aurora-bg" aria-hidden="true">
+    <div class="aurora-blob aurora-blob-1"></div>
+    <div class="aurora-blob aurora-blob-2"></div>
+    <div class="aurora-blob aurora-blob-3"></div>
+  </div>
+
+  <!-- Ambient Interactive Dynamic Spotlight -->
+  <div id="cursorSpotlight" class="hidden md:block"></div>
+
+  <!-- Scroll Progress Bar -->
+  <div id="scrollProgress"></div>
+
+  <!-- Global Interactive Toast Notification -->
+  <div id="toastNotification" class="flex items-center gap-3 rounded-xl border border-brand/40 bg-ink-chip/95 px-4 py-3 font-mono text-xs text-ink-100 shadow-[0_8px_30px_rgba(0,0,0,0.8)] backdrop-blur-xl">
+    <span class="flex size-6 items-center justify-center rounded-full bg-brand/20 text-brand">✓</span>
+    <span id="toastMessage">Contract address copied!</span>
+  </div>
+
+  <!-- Floating Back to Top Pill Button -->
+  <button id="backToTopBtn" onclick="scrollToTop()" type="button" aria-label="Scroll back to top" class="group flex items-center gap-2 rounded-full border border-brand/35 bg-ink-chip/90 px-3.5 py-2 font-mono text-xs text-brand shadow-[0_4px_24px_rgba(0,237,151,0.25)] backdrop-blur-md hover:bg-brand hover:text-ink hover:scale-105 active:scale-95 transition-all cursor-pointer">
+    <svg class="size-3.5 transition-transform group-hover:-translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+    <span class="font-bold tracking-wider uppercase text-[10.5px]">Top</span>
+  </button>
+
+  <!-- ======================================================== -->
+  <!-- FLOATING PARTICLES (Exact Artificial Inu clone ambience)  -->
+  <!-- ======================================================== -->
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0 z-0 overflow-hidden h-[900px]">
+    <span class="absolute rounded-full bg-brand/50 animate-particle-drift" style="left:62.7%;top:58%;width:4px;height:4px;opacity:0.35;--particle-duration:9.5s;--particle-delay:1.2s;--particle-drift-x:24px"></span>
+    <span class="absolute rounded-full bg-brand/40 animate-particle-drift" style="left:15.6%;top:22%;width:5px;height:5px;opacity:0.45;--particle-duration:7.2s;--particle-delay:2.3s;--particle-drift-x:38px"></span>
+    <span class="absolute rounded-full bg-white/30 animate-particle-drift" style="left:23.7%;top:64%;width:3px;height:3px;opacity:0.4;--particle-duration:10.5s;--particle-delay:0.5s;--particle-drift-x:-18px"></span>
+    <span class="absolute rounded-full bg-brand/60 animate-particle-drift" style="left:82.1%;top:34%;width:4.5px;height:4.5px;opacity:0.5;--particle-duration:8.0s;--particle-delay:3.1s;--particle-drift-x:20px"></span>
+    <span class="absolute rounded-full bg-white/25 animate-particle-drift" style="left:48.3%;top:18%;width:3px;height:3px;opacity:0.3;--particle-duration:11.0s;--particle-delay:4.5s;--particle-drift-x:-25px"></span>
+    <span class="absolute rounded-full bg-brand/50 animate-particle-drift" style="left:74.5%;top:72%;width:4px;height:4px;opacity:0.4;--particle-duration:8.8s;--particle-delay:1.8s;--particle-drift-x:15px"></span>
+    <span class="absolute rounded-full bg-brand/45 animate-particle-drift" style="left:38.2%;top:45%;width:3.5px;height:3.5px;opacity:0.35;--particle-duration:9.2s;--particle-delay:2.7s;--particle-drift-x:-22px"></span>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- FIXED HEADER (Artificial Inu Header Clone)                -->
+  <!-- ======================================================== -->
+  <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center border-b border-white/5 bg-ink/75 backdrop-blur-xl">
+    <div class="mx-auto w-full px-4 sm:px-6 md:px-8 max-w-[1240px] flex items-center justify-between gap-2 sm:gap-4 lg:grid lg:grid-cols-[1fr_auto_1fr]">
+      
+      <!-- Brand & Ticker -->
+      <div class="col-start-1 flex items-center gap-3 justify-self-start min-w-0">
+        <a class="flex items-center gap-2.5 text-ink-50 group flex-none" href="index.html">
+          <img alt="Near Inu Icon" width="36" height="36" class="block rounded-full border-2 border-brand transition-transform group-hover:scale-105" src="assets/ni-logo.png" />
+          <span class="flex flex-col gap-[2px] leading-none">
+            <span class="font-display text-sm sm:text-base tracking-[-0.01em]">NEAR<span class="text-brand"> INU</span></span>
+            <span class="font-mono text-[9px] sm:text-[9.5px] tracking-[0.14em] text-ink-600 uppercase">Long compute</span>
+          </span>
+        </a>
+        <div class="hidden sm:block">
+          <span class="flex items-center gap-2 rounded-full border border-white/10 bg-ink-chip px-3 py-1.5 font-mono text-[11.5px] whitespace-nowrap">
+            <span class="h-1.5 w-1.5 rounded-full bg-brand animate-pulse-glow"></span>
+            <span class="text-ink-500">$NEAR</span>
+            <span class="text-brand font-semibold" id="headerNearPrice">$5.82</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Navigation Pill Bar (Desktop) -->
+      <nav class="col-start-2 hidden shrink-0 items-center gap-1 rounded-full border border-white/10 bg-ink-chip p-1.5 backdrop-blur-sm lg:flex">
+        <a href="index.html" class="relative rounded-full px-3.5 py-2 font-mono text-[12.5px] text-ink-50 transition-colors bg-white/10">Home</a>
+        <a href="index.html#vault" class="relative rounded-full px-3.5 py-2 font-mono text-[12.5px] text-ink-400 hover:text-ink-50 transition-colors">Vault</a>
+        <a href="index.html#how-it-works" class="relative rounded-full px-3.5 py-2 font-mono text-[12.5px] text-ink-400 hover:text-ink-50 transition-colors">How It Works</a>
+        <a href="#how" class="relative rounded-full px-3.5 py-2 font-mono text-[12.5px] text-ink-400 hover:text-ink-50 transition-colors">How to Buy</a>
+        <a href="#memes" class="relative rounded-full px-3.5 py-2 font-mono text-[12.5px] text-ink-400 hover:text-ink-50 transition-colors">Memes</a>
+        <a href="memes.html" class="relative rounded-full px-3 py-1.5 font-mono text-[11.5px] text-brand border border-brand/30 bg-brand/10 hover:bg-brand hover:text-ink transition-all flex items-center gap-1.5">
+          <span>Vault 50+</span>
+          <span class="h-1.5 w-1.5 rounded-full bg-brand"></span>
+        </a>
+      </nav>
+
+      <!-- Right CTAs -->
+      <div class="col-start-3 flex items-center gap-1.5 sm:gap-2 justify-self-end flex-nowrap">
+        <!-- Interactive Cyber Ambient Sound Button -->
+        <button id="soundToggleBtn" onclick="toggleAmbientSound()" type="button" aria-label="Toggle cyber audio effects" title="Toggle cyber sound synthesizer" class="flex size-8 sm:size-9 items-center justify-center rounded-full border border-white/10 bg-ink-chip text-ink-400 hover:text-brand hover:border-brand/40 transition-all sound-muted flex-none">
+          <div class="flex items-center gap-0.5">
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+          </div>
+        </button>
+
+        <!-- X / Twitter (Visible on desktop & tablet) -->
+        <a href="https://x.com/nearinucom" target="_blank" rel="noopener noreferrer" title="Follow on X" class="hidden sm:flex size-9 items-center justify-center rounded-full border border-white/10 bg-ink-chip text-ink-400 hover:text-brand hover:border-brand/40 transition-all flex-none">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="h-3.5 w-3.5"><path d="M18.9 2H22l-7.1 8.1L23.3 22h-6.6l-5.2-6.8L5.6 22H2.4l7.6-8.7L1 2h6.8l4.7 6.2L18.9 2Zm-1.1 18h1.8L7.3 3.9H5.5L17.8 20Z"/></svg>
+        </a>
+
+        <!-- Telegram (Visible on desktop & tablet) -->
+        <a href="https://t.me/nearinu" target="_blank" rel="noopener noreferrer" title="Join Telegram Community" class="hidden sm:flex size-9 items-center justify-center rounded-full border border-white/10 bg-ink-chip text-ink-400 hover:text-brand hover:border-brand/40 transition-all flex-none">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"></path></svg>
+        </a>
+
+        <!-- Trade $NI Button -->
+        <a href="https://nearly.trade/ni-2.nearlytrade.near" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-1.5 sm:gap-2.5 rounded-full font-display bg-brand text-ink hover:bg-lime-soft hover:shadow-[0_10px_30px_rgba(0,237,151,0.3)] py-1.5 pr-1.5 pl-3 sm:pl-[20px] text-xs sm:text-[14px] transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] flex-none">
+          <span>Trade $NI</span>
+          <span class="relative flex size-6 sm:size-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-ink text-brand">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="size-3 sm:size-3.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </span>
+        </a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu" class="flex lg:hidden size-8 sm:size-9 items-center justify-center rounded-full border border-white/10 bg-ink-chip text-ink-400 hover:text-brand hover:border-brand/40 transition-all flex-none">
+          <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobileDrawer" class="hidden lg:hidden absolute top-16 inset-x-0 bg-ink-surface/95 backdrop-blur-2xl border-b border-white/10 p-6 flex flex-col gap-4 text-center font-mono text-sm shadow-2xl">
+      <a href="index.html" onclick="toggleMobileMenu()" class="py-2 text-brand">Home</a>
+      <a href="index.html#vault" onclick="toggleMobileMenu()" class="py-2 text-ink-300 hover:text-brand">Reward Vault</a>
+      <a href="index.html#how-it-works" onclick="toggleMobileMenu()" class="py-2 text-ink-300 hover:text-brand">How It Works</a>
+      <a href="#how" onclick="toggleMobileMenu()" class="py-2 text-ink-300 hover:text-brand">How to Buy</a>
+      <a href="#memes" onclick="toggleMobileMenu()" class="py-2 text-ink-300 hover:text-brand">Memes</a>
+      <a href="memes.html" onclick="toggleMobileMenu()" class="py-2 text-brand font-semibold">Full Meme Vault (50+)</a>
+      
+      <!-- Social row inside mobile drawer -->
+      <div class="flex items-center justify-center gap-3 pt-2 border-t border-white/10">
+        <a href="https://x.com/nearinucom" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-full border border-white/10 bg-ink-chip px-4 py-2 text-xs text-ink-300 hover:text-brand">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="size-3.5"><path d="M18.9 2H22l-7.1 8.1L23.3 22h-6.6l-5.2-6.8L5.6 22H2.4l7.6-8.7L1 2h6.8l4.7 6.2L18.9 2Zm-1.1 18h1.8L7.3 3.9H5.5L17.8 20Z"/></svg>
+          <span>Twitter / X</span>
+        </a>
+        <a href="https://t.me/nearinu" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-full border border-white/10 bg-ink-chip px-4 py-2 text-xs text-ink-300 hover:text-brand">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="size-3.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"></path></svg>
+          <span>Telegram</span>
+        </a>
+      </div>
+
+      <a href="https://nearly.trade/ni-2.nearlytrade.near" target="_blank" class="mt-1 py-2.5 rounded-full bg-brand text-ink font-display font-bold">Trade $NI on nearly.trade</a>
+    </div>
+  </header>
+
+  <!-- ======================================================== -->
+  <!-- HERO SECTION (Direct layout matching screenshot)        -->
+  <!-- ======================================================== -->
+  <main class="relative z-10 pt-20">
+    <section class="relative overflow-hidden pt-12 pb-16 md:pt-20 md:pb-24 hero-glow-radial">
+      <div class="mx-auto w-full px-6 md:px-8 max-w-[1240px]">
+        <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] items-center gap-12 lg:gap-8">
+          
+          <!-- LEFT SIDE: Text, Badges, Buttons, CAs -->
+          <div class="flex flex-col items-start text-left z-10">
+            
+            <!-- Launch on nearly.trade badge with live pulse and shimmer -->
+            <div class="mb-3 inline-flex items-center gap-2.5 rounded-full border border-brand/40 bg-brand/10 px-4 py-1.5 backdrop-blur-md badge-shimmer shadow-[0_0_20px_rgba(0,237,151,0.2)]">
+              <span class="relative flex size-2">
+                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75"></span>
+                <span class="relative inline-flex size-2 rounded-full bg-brand"></span>
+              </span>
+              <span class="font-mono text-xs font-bold text-brand tracking-wider uppercase">LAUNCHING ON NEARLY.TRADE</span>
+              <span class="text-white/20">|</span>
+              <span class="font-mono text-xs text-ink-300 font-semibold">NEAR L1 PROTOCOL</span>
+            </div>
+
+            <!-- Live Cyber Telemetry Ticker Ribbon -->
+            <div class="mb-4 hidden sm:inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/10 bg-ink-chip/90 px-3.5 py-1 text-[10.5px] font-mono text-ink-400 backdrop-blur-md shadow-sm">
+              <span class="size-1.5 rounded-full bg-brand animate-ping"></span>
+              <span class="text-brand font-semibold">NEAR L1</span>
+              <span class="text-white/20">/</span>
+              <span>SHARDS: <strong class="text-ink-200">6 ACTIVE</strong></span>
+              <span class="text-white/20">/</span>
+              <span>FINALITY: <strong class="text-brand">&lt;1.18s</strong></span>
+              <span class="text-white/20">/</span>
+              <span>GAS: <strong class="text-brand">&lt;0.0001 NEAR</strong></span>
+              <span class="text-white/20">/</span>
+              <span>BURN: <strong class="text-ink-200">100% LP</strong></span>
+            </div>
+
+            <!-- Big Typography (Archivo Black + Cyber Gradient) -->
+            <h1 class="font-display text-[clamp(44px,6.8vw,86px)] leading-[0.94] tracking-[-0.03em] text-ink-50 text-balance">
+              The onchain <br/>
+              <span class="cyber-gradient-text drop-shadow-[0_0_35px_rgba(0,237,151,0.4)]">$NEAR</span> <br/>
+              community.
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="mt-6 max-w-[490px] font-sans text-base md:text-lg leading-relaxed text-ink-400">
+              <strong class="text-ink-50">$NI</strong> is paired with NEAR Protocol with a <span class="text-brand font-semibold">4% buy & sell tax</span>. Every trade feeds the Vault: <span class="text-brand font-semibold">75%</span> auto-rewards holders in native Near coin and <span class="text-brand font-semibold">25%</span> fuels creator expansion. The dog is long compute.
+            </p>
+
+            <!-- Cyber Telemetry Mini-Badges (New High-Tech Polish) -->
+            <div class="mt-5 flex flex-wrap items-center gap-2.5 font-mono text-[11px]">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-brand/20 bg-brand/5 text-ink-200">
+                <span class="size-1.5 rounded-full bg-brand animate-pulse"></span>
+                <span class="text-ink-500">Tax:</span>
+                <strong class="text-brand">4.0% Flat</strong>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-white/10 bg-ink-chip/80 text-ink-200">
+                <span class="size-1.5 rounded-full bg-amber-400"></span>
+                <span class="text-ink-500">Holders:</span>
+                <strong class="text-ink-100">75% ($NEAR)</strong>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-white/10 bg-ink-chip/80 text-ink-200">
+                <span class="size-1.5 rounded-full bg-brand"></span>
+                <span class="text-ink-500">Supply:</span>
+                <strong class="text-ink-100">1B $NI</strong>
+              </span>
+            </div>
+
+            <!-- Buttons: Trade $NI & How It Works -->
+            <div class="mt-8 flex flex-wrap items-center gap-3">
+              <a href="https://nearly.trade/ni-2.nearlytrade.near" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-2.5 rounded-full font-display bg-brand text-ink hover:bg-lime-soft hover:shadow-[0_10px_30px_rgba(0,237,151,0.35)] py-2 pr-2 pl-6 text-[15px] transition-all duration-200 hover:scale-[1.03] active:scale-[0.97]">
+                <span>Trade $NI</span>
+                <span class="relative flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-ink text-brand">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="size-3.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </span>
+              </a>
+
+              <a href="#how-it-works" class="inline-flex items-center justify-center rounded-full border border-white/10 bg-ink-chip px-5 py-3 font-mono text-xs md:text-sm text-ink-50 hover:bg-white/5 hover:border-brand/40 transition-all">
+                How It Works
+              </a>
+            </div>
+
+            <!-- Secondary Links: Memes, Dexscreener, Telegram -->
+            <div class="mt-3 flex flex-wrap items-center gap-3">
+              <a href="memes.html" class="inline-flex items-center justify-center rounded-full border border-white/10 bg-ink-chip px-5 py-2.5 font-mono text-xs text-ink-200 hover:text-brand hover:border-brand/40 transition-all">
+                Memes
+              </a>
+              <a href="https://dexscreener.com/near/refv2-ni-2.nearlytrade.near:wrap.near:10000" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-full border border-white/10 bg-ink-chip px-5 py-2.5 font-mono text-xs text-ink-200 hover:text-brand hover:border-brand/40 transition-all">
+                Dexscreener
+              </a>
+              <a href="https://t.me/nearinu" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-ink-chip px-5 py-2.5 font-mono text-xs text-ink-200 hover:text-brand hover:border-brand/40 transition-all">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="h-3.5 w-3.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"></path></svg>
+                <span>Telegram</span>
+              </a>
+            </div>
+
+            <!-- Contract Address Pills -->
+            <div class="mt-7 flex flex-wrap items-center gap-2.5">
+              <!-- CA NI Pill -->
+              <button onclick="copyText('ni-2.nearlytrade.near', this)" type="button" class="group cyber-bracket flex cursor-pointer items-center gap-2 rounded-xl border border-brand/30 bg-ink-chip/90 px-3.5 py-2 font-mono text-xs text-ink-200 transition-all hover:border-brand hover:bg-brand/10 hover:shadow-[0_0_16px_rgba(0,237,151,0.25)] active:scale-[0.97]">
+                <span class="rounded bg-brand/20 px-1.5 py-0.5 text-[10px] font-bold text-brand uppercase tracking-wider">CA</span>
+                <span class="font-mono text-xs text-ink-100 font-medium">ni-2.nearlytrade.near</span>
+                <span class="text-[10px] tracking-wider text-brand uppercase font-bold group-hover:underline flex items-center gap-1">
+                  <span>Copy</span>
+                  <svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </span>
+              </button>
+
+              <!-- NEAR Pair Pill -->
+              <button onclick="copyText('wrap.near', this)" type="button" class="group cyber-bracket flex cursor-pointer items-center gap-2 rounded-xl border border-white/10 bg-ink-chip/90 px-3.5 py-2 font-mono text-xs text-ink-200 transition-all hover:border-brand hover:bg-brand/10 hover:shadow-[0_0_16px_rgba(0,237,151,0.25)] active:scale-[0.97]">
+                <span class="rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-bold text-ink-400 uppercase tracking-wider">PAIR</span>
+                <span class="font-mono text-xs text-ink-100 font-medium">wrap.near</span>
+                <span class="text-[10px] tracking-wider text-brand uppercase font-bold group-hover:underline flex items-center gap-1">
+                  <span>Copy</span>
+                  <svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </span>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- RIGHT SIDE: Mascot with Cyber Visor, GPU and Holographic HUD Discs -->
+          <div class="relative flex justify-center items-center select-none">
+            
+            <!-- Soft ambient neon back-glow -->
+            <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <div class="size-[380px] rounded-full bg-brand/20 blur-[100px] animate-fx-glow"></div>
+              <div class="size-[220px] rounded-full bg-brand/30 blur-[60px]"></div>
+            </div>
+
+            <!-- Mascot Container with Bob Animation -->
+            <div class="relative w-full max-w-[500px] animate-bob">
+              
+              <!-- Floating HUD Data Tag (Left) - Enhanced with .hud-tag -->
+              <div class="absolute -top-2 left-0 z-20 hidden sm:flex items-center gap-2.5 rounded-2xl hud-tag px-4 py-2.5 shadow-2xl cursor-default">
+                <div class="relative flex items-center justify-center size-7 flex-none">
+                  <span class="absolute inset-0 rounded-full bg-brand/40 near-glow-aura"></span>
+                  <img src="assets/near.png" alt="NEAR Logo" class="relative z-10 size-5 rounded-full object-contain" />
+                </div>
+                <div class="font-mono text-left leading-none">
+                  <div class="text-[9.5px] text-ink-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="size-1 rounded-full bg-brand animate-pulse"></span>
+                    <span>Native Reward Pool</span>
+                  </div>
+                  <div class="text-xs font-bold text-brand mt-1">75% Tax to Holders</div>
+                </div>
+              </div>
+
+              <!-- Floating Status Tag (Right) - Enhanced with .hud-tag -->
+              <div class="absolute bottom-14 -right-2 z-20 hidden sm:flex items-center gap-2.5 rounded-2xl hud-tag px-4 py-2.5 shadow-2xl cursor-default">
+                <span class="relative flex size-2.5">
+                  <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75"></span>
+                  <span class="relative inline-flex size-2.5 rounded-full bg-brand"></span>
+                </span>
+                <div class="font-mono text-left leading-none">
+                  <div class="text-[9.5px] text-ink-400 uppercase tracking-wider">Bonding DEX</div>
+                  <div class="text-xs font-bold text-ink-50 mt-1">nearly.trade</div>
+                </div>
+              </div>
+
+              <!-- Holographic HUD Radar Disc under mascot -->
+              <div class="absolute bottom-6 left-1/2 -translate-x-1/2 size-72 sm:size-80 rounded-full border border-brand/20 pointer-events-none overflow-hidden">
+                <div class="radar-sweep-beam"></div>
+                <div class="absolute inset-4 rounded-full border border-dashed border-brand/20 near-ring-orbit"></div>
+                <div class="absolute inset-10 rounded-full border border-brand/15 near-ring-orbit-reverse"></div>
+              </div>
+
+              <!-- Main Hero Mascot Artwork (Dog biting GPU on holographic HUD) -->
+              <div class="relative z-10 flex justify-center">
+                <img src="assets/near-inu-hero.png" alt="Near Inu biting a GPU on Holographic Discs" class="w-full max-w-[460px] object-contain drop-shadow-[0_25px_60px_rgba(0,237,151,0.35)] transition-transform duration-500 hover:scale-[1.03]" />
+              </div>
+
+              <!-- Base platform pedestal reflection -->
+              <div class="mx-auto -mt-4 h-6 w-3/4 rounded-[100%] bg-brand/35 blur-[20px]"></div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- HIGH CONTRAST RUNNING MARQUEE BANNER                     -->
+    <!-- (Exact Artificial Inu Green Marquee Bar)                 -->
+    <!-- ======================================================== -->
+    <div class="relative overflow-hidden bg-brand py-3 text-ink select-none border-y border-black">
+      <div class="flex whitespace-nowrap animate-marquee font-display text-xs md:text-sm font-black tracking-wider uppercase">
+        <span class="mx-5">4% BUY & SELL TAX</span>
+        <span class="mx-5">·</span>
+        <span class="mx-5">VAULT GROWS ON EVERY TRADE</span>
+        <span class="mx-5">·</span>
+        <span class="mx-5">75% TAX IN NEAR COIN TO HOLDERS</span>
+        <span class="mx-5">·</span>
+        <span class="mx-5">25% CREATOR & MARKETING</span>
+        <span class="mx-5">·</span>
+        <span class="mx-5">LONG COMPUTE</span>
+        <span class="mx-5">·</span>
+        <span class="mx-5">$NI × $NEAR</span>
+        <span class="mx-5">·</span>
+        <span class="mx-5">LAUNCHING ON NEARLY.TRADE</span>
+        <span class="mx-5">·</span>
+        <span class="mx-5">THE DOG IS LONG SHARDING</span>
+        <span class="mx-5">·</span>
+
+        <!-- Duplicated seamless loop -->
+        <span class="mx-5">4% BUY & SELL TAX</span>
+        <span class="mx-5">·</span>
+        <span class="mx-5">VAULT GROWS ON EVERY TRADE</span>
+        <span class="mx-5">·</span>
+        <span class="mx-5">75% TAX IN NEAR COIN TO HOLDERS</span>
+        <span class="mx-5">·</span>
+        <span class="mx-5">25% CREATOR & MARKETING</span>
+        <span class="mx-5">·</span>
+        <span class="mx-5">LONG COMPUTE</span>
+        <span class="mx-5">·</span>
+        <span class="mx-5">$NI × $NEAR</span>
+        <span class="mx-5">·</span>
+        <span class="mx-5">LAUNCHING ON NEARLY.TRADE</span>
+        <span class="mx-5">·</span>
+        <span class="mx-5">THE DOG IS LONG SHARDING</span>
+        <span class="mx-5">·</span>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- REWARD VAULT SECTION (Artificial Inu Vault Clone)        -->
+    <!-- ======================================================== -->
+    <section id="vault" class="relative py-24 md:py-32 overflow-hidden bg-ink-soft">
+      <div class="absolute inset-0 bg-grid-pattern opacity-60 pointer-events-none"></div>
+
+      <div class="relative mx-auto max-w-[1240px] px-6 md:px-8">
+        <div class="flex flex-col items-center text-center">
+          
+          <div class="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] text-brand uppercase font-bold">
+            <span class="h-2 w-2 rounded-full bg-brand animate-pulse-glow"></span>
+            LIVE · NEAR ACCUMULATION VAULT
+          </div>
+
+          <!-- Giant Total Value Display -->
+          <div class="mt-6 flex items-baseline justify-center">
+            <span class="font-display text-[clamp(64px,13vw,172px)] leading-[0.88] tracking-tight text-brand drop-shadow-[0_0_40px_rgba(0,237,151,0.35)]" id="vaultTotalUsd">
+              …
+            </span>
+          </div>
+
+          <!-- Total NEAR count -->
+          <p class="mt-6 font-display text-[clamp(22px,3vw,36px)] text-ink-50 flex items-center gap-3">
+            <span id="vaultNearTokens">—</span>
+            <span class="font-mono text-xs md:text-sm tracking-widest text-ink-500 uppercase bg-ink-chip px-3 py-1 rounded-md border border-white/10">$NEAR DISTRIBUTED</span>
+          </p>
+
+          <!-- Live timestamp -->
+          <p class="mt-3 inline-flex items-center gap-2 font-mono text-[11px] text-brand/70 bg-brand/8 border border-brand/20 rounded-full px-3 py-1" id="vaultLastUpdated">
+            <span class="h-1.5 w-1.5 rounded-full bg-brand animate-pulse"></span> Fetching from NEAR RPC…
+          </p>
+
+          <!-- Vault Breakdown Cards -->
+          <div class="mt-14 grid w-full max-w-[960px] grid-cols-1 md:grid-cols-3 gap-4 border-t border-white/10 pt-10 text-left">
+            
+            <!-- Card 1: Holder Rewards (75%) -->
+            <div class="holo-card cyber-bracket rounded-2xl border border-brand/35 bg-ink-card p-6 relative overflow-hidden group shadow-xl">
+              <div class="absolute top-0 right-0 h-16 w-16 bg-brand/10 rounded-bl-full pointer-events-none"></div>
+              <p class="flex items-center gap-2 font-mono text-[11px] tracking-[0.15em] text-brand uppercase font-bold">
+                <span class="h-2 w-2 rounded-sm bg-brand"></span>Holder Reward Pool (75%)
+              </p>
+              <p class="mt-4 font-display text-2xl md:text-3xl text-ink-50" id="vaultHolderNear">
+                — <span class="font-mono text-sm text-ink-400">NEAR</span>
+              </p>
+              <p class="mt-1 font-mono text-xs text-brand font-semibold" id="vaultHolderUsd">— Distributed</p>
+              <p class="mt-3 text-xs text-ink-400 leading-normal">
+                Directly claims or auto-distributes native NEAR to all diamond hands holding $NI.
+              </p>
+            </div>
+
+            <!-- Card 2: Creator & Marketing (25%) -->
+            <div class="holo-card cyber-bracket rounded-2xl border border-white/10 bg-ink-card p-6 relative overflow-hidden group shadow-xl">
+              <p class="flex items-center gap-2 font-mono text-[11px] tracking-[0.15em] text-ink-400 uppercase font-semibold">
+                <span class="h-2 w-2 rounded-sm bg-ink-500"></span>Creator &amp; Ops (25%)
+              </p>
+              <p class="mt-4 font-display text-2xl md:text-3xl text-ink-50" id="vaultCreatorNear">
+                — <span class="font-mono text-sm text-ink-400">NEAR</span>
+              </p>
+              <p class="mt-1 font-mono text-xs text-ink-400" id="vaultCreatorUsd">— Reserved</p>
+              <p class="mt-3 text-xs text-ink-400 leading-normal">
+                Powers perpetual buybacks, marketing push, CEX listings, and ecosystem development.
+              </p>
+            </div>
+
+            <!-- Card 3: nearly.trade Liquidity -->
+            <div class="holo-card cyber-bracket rounded-2xl border border-white/10 bg-ink-card p-6 relative overflow-hidden group shadow-xl">
+              <p class="flex items-center gap-2 font-mono text-[11px] tracking-[0.15em] text-ink-400 uppercase font-semibold">
+                <span class="h-2 w-2 rounded-sm bg-brand/50"></span>Liquidity Pool Status
+              </p>
+              <p class="mt-4 font-display text-2xl md:text-3xl text-ink-50">
+                100% <span class="font-mono text-sm text-brand">LOCKED</span>
+              </p>
+              <p class="mt-1 font-mono text-xs text-brand font-semibold">Launchpad: nearly.trade</p>
+              <p class="mt-3 text-xs text-ink-400 leading-normal">
+                Fair-launch bonding curve backed by NEAR Protocol fast finality and low gas fees.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- INTERACTIVE REWARD CALCULATOR                            -->
+    <!-- ======================================================== -->
+    <section id="calculator" class="relative py-20 md:py-28 border-t border-white/10 bg-ink overflow-hidden">
+      <!-- Ambient decorative glow & background grid -->
+      <div class="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-brand/10 rounded-full blur-[140px] pointer-events-none"></div>
+
+      <div class="relative mx-auto max-w-[1240px] px-6 md:px-8">
+        
+        <div class="mx-auto max-w-[860px] rounded-3xl border border-brand/35 bg-ink-chip/95 p-6 sm:p-10 md:p-12 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.85)] relative overflow-hidden glass-border-glow cyber-bracket">
+          <div class="absolute -top-32 -right-32 size-72 bg-brand/20 rounded-full blur-[90px] pointer-events-none"></div>
+          <div class="absolute -bottom-32 -left-32 size-72 bg-brand/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+          <!-- Header -->
+          <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6 relative z-10">
+            <div>
+              <div class="inline-flex items-center gap-2 font-mono text-xs text-brand uppercase tracking-wider">
+                <span class="size-2 rounded-full bg-brand animate-pulse"></span>
+                <span>Interactive Estimator</span>
+              </div>
+              <h3 class="font-display text-2xl sm:text-3xl md:text-4xl text-ink-50 mt-1.5 font-bold tracking-tight">
+                Estimate Your $NEAR Rewards
+              </h3>
+            </div>
+            <div class="inline-flex items-center gap-2 rounded-full bg-brand/10 border border-brand/40 px-4 py-1.5 font-mono text-xs text-brand font-semibold shadow-[0_0_15px_rgba(0,237,151,0.2)]">
+              <span class="size-1.5 rounded-full bg-brand"></span>
+              4% Tax · 75% to Holders (1B NI Supply)
+            </div>
+          </div>
+
+          <div class="mt-8 space-y-7 relative z-10">
+            <!-- Slider 1: NI Tokens Held -->
+            <div class="rounded-2xl border border-white/5 bg-ink-subtle/80 p-5 md:p-6 transition-all hover:border-brand/25">
+              <div class="flex flex-wrap justify-between items-center text-sm font-mono mb-3 gap-2">
+                <span class="text-ink-300 font-semibold flex items-center gap-2">
+                  <span class="size-1.5 rounded-full bg-brand"></span>
+                  Your $NI Holdings:
+                </span>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-ink-500 text-xs hidden sm:inline">Tier:</span>
+                  <button type="button" onclick="setNiPreset(1000000)" class="preset-pill">1M (Shrimp 0.1%)</button>
+                  <button type="button" onclick="setNiPreset(10000000)" class="preset-pill active">10M (Dolphin 1%)</button>
+                  <button type="button" onclick="setNiPreset(50000000)" class="preset-pill">50M (Whale 5%)</button>
+                </div>
+              </div>
+              
+              <!-- Value badge display -->
+              <div class="flex justify-between items-baseline mb-2">
+                <span class="font-mono text-xs text-ink-500">Selected Allocation</span>
+                <span class="text-brand font-display text-xl sm:text-2xl font-bold tracking-tight" id="sliderNiVal">10,000,000 NI (1.00%)</span>
+              </div>
+
+              <input type="range" id="niSlider" min="100000" max="100000000" step="100000" value="10000000" class="w-full cursor-pointer accent-[#00ed97]" oninput="updateCalculator()" />
+              
+              <div class="flex justify-between text-[11px] font-mono text-ink-500 mt-2">
+                <span>100K NI (0.01%)</span>
+                <span>50M NI (5%)</span>
+                <span>100M NI (10%)</span>
+              </div>
+            </div>
+
+            <!-- Slider 2: Daily Trading Volume -->
+            <div class="rounded-2xl border border-white/5 bg-ink-subtle/80 p-5 md:p-6 transition-all hover:border-brand/25">
+              <div class="flex flex-wrap justify-between items-center text-sm font-mono mb-3 gap-2">
+                <span class="text-ink-300 font-semibold flex items-center gap-2">
+                  <span class="size-1.5 rounded-full bg-brand"></span>
+                  Daily Volume on nearly.trade:
+                </span>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-ink-500 text-xs hidden sm:inline">Presets:</span>
+                  <button type="button" onclick="setVolPreset(50000)" class="preset-pill">$50K</button>
+                  <button type="button" onclick="setVolPreset(250000)" class="preset-pill active">$250K</button>
+                  <button type="button" onclick="setVolPreset(1000000)" class="preset-pill">$1M</button>
+                </div>
+              </div>
+
+              <!-- Value badge display -->
+              <div class="flex justify-between items-baseline mb-2">
+                <span class="font-mono text-xs text-ink-500">Estimated 24h DEX Volume</span>
+                <span class="text-brand font-display text-xl sm:text-2xl font-bold tracking-tight" id="sliderVolVal">$250,000 / day</span>
+              </div>
+
+              <input type="range" id="volSlider" min="10000" max="2000000" step="10000" value="250000" class="w-full cursor-pointer accent-[#00ed97]" oninput="updateCalculator()" />
+              
+              <div class="flex justify-between text-[11px] font-mono text-ink-500 mt-2">
+                <span>$10K / day</span>
+                <span>$1M / day</span>
+                <span>$2M / day</span>
+              </div>
+            </div>
+
+            <!-- Modern Metric Result Cards -->
+            <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <!-- Daily Near Card -->
+              <div class="relative group cyber-bracket rounded-2xl border border-white/10 bg-gradient-to-b from-ink-subtle to-ink-chip p-5 text-center transition-all duration-300 hover:border-brand/50 hover:shadow-[0_0_25px_rgba(0,237,151,0.15)]">
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 font-mono text-[10px] text-ink-400 uppercase tracking-wider mb-2">
+                  <span class="size-1.5 rounded-full bg-brand"></span> Daily Payout
+                </div>
+                <p class="font-display text-2xl sm:text-3xl font-bold text-brand tracking-tight" id="calcDailyNear">~32.22 NEAR</p>
+                <p class="font-mono text-xs text-ink-300 font-semibold mt-1" id="calcDailyUsd">$187.50 / day</p>
+              </div>
+
+              <!-- Monthly Near Card -->
+              <div class="relative group cyber-bracket rounded-2xl border border-brand/40 bg-gradient-to-b from-brand/10 via-ink-chip to-ink-subtle p-5 text-center transition-all duration-300 hover:border-brand hover:shadow-[0_0_30px_rgba(0,237,151,0.25)]">
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-brand/15 font-mono text-[10px] text-brand uppercase tracking-wider mb-2">
+                  <span class="size-1.5 rounded-full bg-brand animate-pulse"></span> 30-Day Harvest
+                </div>
+                <p class="font-display text-2xl sm:text-3xl font-bold text-ink-50 tracking-tight" id="calcMonthlyNear">~966.5 NEAR</p>
+                <p class="font-mono text-xs text-brand font-bold mt-1" id="calcMonthlyUsd">$5,625.00 / mo</p>
+              </div>
+
+              <!-- Annual APY Card -->
+              <div class="relative group cyber-bracket rounded-2xl border border-white/10 bg-gradient-to-b from-ink-subtle to-ink-chip p-5 text-center transition-all duration-300 hover:border-brand/50 hover:shadow-[0_0_25px_rgba(0,237,151,0.15)]">
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 font-mono text-[10px] text-ink-400 uppercase tracking-wider mb-2">
+                  <span class="size-1.5 rounded-full bg-amber-400"></span> Annualized Yield
+                </div>
+                <p class="font-display text-2xl sm:text-3xl font-bold text-brand tracking-tight" id="calcApy">~380%</p>
+                <p class="font-mono text-xs text-ink-400 mt-1">Passive Accumulation</p>
+              </div>
+            </div>
+
+            <!-- Disclaimer note -->
+            <div class="flex items-center justify-center gap-2 pt-2 text-center font-mono text-[11px] text-ink-500">
+              <span class="size-1 rounded-full bg-brand"></span>
+              <span>Based on 1,000,000,000 NI max supply, 4% tax (3% net redistributed to holders), and benchmark $5.82 NEAR.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- UNDERLYING & LIVE CHART SECTION                          -->
+    <!-- ======================================================== -->
+    <section id="underlying" class="relative py-20 md:py-28 border-t border-white/10 bg-ink-soft">
+      <div class="mx-auto max-w-[1240px] px-6 md:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          
+          <!-- Left side explanation -->
+          <div>
+            <p class="font-mono text-xs tracking-[0.2em] text-brand uppercase mb-3">The Underlying Asset</p>
+            <h2 class="font-display text-[clamp(32px,4vw,52px)] leading-[1.02] tracking-tight text-ink-50 mb-6">
+              Every shard verified <br/>
+              is our chart.
+            </h2>
+            <p class="text-ink-400 text-base md:text-lg leading-relaxed mb-8">
+              $NEAR isn't just a ticker here: it's the actual engine feeding your wallet. Nightshade sharding, chain abstraction, and hyper-scalable Web3 compute sit underneath $NI's price. When NEAR ecosystem volume roars, Near Inu holders harvest real yield.
+            </p>
+
+            <!-- Metrics bar table -->
+            <div class="grid grid-cols-3 gap-px border border-white/10 bg-white/10 rounded-lg overflow-hidden">
+              <div class="bg-ink-chip p-4">
+                <p class="font-mono text-[11px] text-ink-500 uppercase tracking-wider mb-1">Pair Side</p>
+                <p class="font-display text-xl text-brand">NEAR</p>
+              </div>
+              <div class="bg-ink-chip p-4">
+                <p class="font-mono text-[11px] text-ink-500 uppercase tracking-wider mb-1">Settlement</p>
+                <p class="font-display text-xl text-ink-50">Onchain</p>
+              </div>
+              <div class="bg-ink-chip p-4">
+                <p class="font-mono text-[11px] text-ink-500 uppercase tracking-wider mb-1">Launchpad</p>
+                <p class="font-display text-xl text-brand">nearly.trade</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right side: Cyber Matrix Chart & Data center rack simulator -->
+          <div class="flex flex-col gap-4">
+            
+            <!-- Chart Container with Holo Glow & Cyber Bracket -->
+            <div id="chartContainer" class="holo-card cyber-bracket rounded-2xl border border-brand/35 bg-ink-chip/95 p-6 shadow-2xl relative overflow-hidden">
+              
+              <!-- Floating Scrubber HUD Tooltip -->
+              <div id="chartTooltip" class="rounded-lg border border-brand/50 bg-ink-chip/95 px-3 py-1 font-mono text-[11px] text-ink-100 shadow-[0_4px_24px_rgba(0,0,0,0.9)] backdrop-blur-md flex items-center gap-1.5 border-l-2 border-l-brand">
+                <span class="size-1.5 rounded-full bg-brand animate-ping"></span>
+                <span class="text-brand font-bold" id="tooltipPrice">$0.00342</span>
+                <span class="text-ink-500">|</span>
+                <span class="text-ink-300 text-[10px]" id="tooltipVol">Vol: $284.2K</span>
+              </div>
+
+              <div class="flex items-center justify-between pb-3.5 border-b border-white/10">
+                <div class="flex items-center gap-2.5">
+                  <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand/10 border border-brand/30">
+                    <span class="size-2 rounded-full bg-brand animate-ping"></span>
+                    <span class="font-mono text-xs font-bold text-brand">$NI / NEAR</span>
+                  </div>
+                  <div class="flex gap-1 bg-ink-surface p-1 rounded-lg border border-white/10">
+                    <button id="tf1h" onclick="setTimeframe('1h')" class="tf-btn px-2.5 py-0.5 font-mono text-[10px] uppercase bg-brand/20 text-brand rounded transition-all font-semibold">1H</button>
+                    <button id="tf24h" onclick="setTimeframe('24h')" class="tf-btn px-2.5 py-0.5 font-mono text-[10px] uppercase text-ink-500 hover:text-ink-300 rounded transition-all">24H</button>
+                    <button id="tf7d" onclick="setTimeframe('7d')" class="tf-btn px-2.5 py-0.5 font-mono text-[10px] uppercase text-ink-500 hover:text-ink-300 rounded transition-all">7D</button>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <span class="font-mono text-sm text-ink-50 font-bold" id="chartPrice">$0.00342</span>
+                  <span class="font-mono text-xs text-brand font-bold ml-2 bg-brand/10 border border-brand/20 px-2 py-0.5 rounded" id="chartChange">+24.8%</span>
+                </div>
+              </div>
+
+              <!-- SVG Animated Line Chart with Interactive Crosshair -->
+              <div id="chartSvgWrapper" class="relative h-[165px] w-full pt-4 cursor-crosshair">
+                <svg id="chartSvg" viewBox="0 0 420 130" preserveAspectRatio="none" role="img" class="block h-full w-full">
+                  <defs>
+                    <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#00ed97" stop-opacity="0.4"/>
+                      <stop offset="100%" stop-color="#00ed97" stop-opacity="0.0"/>
+                    </linearGradient>
+                  </defs>
+                  <polygon id="chartPolyFill" points="0,110 20,105 45,115 70,100 100,85 130,90 160,70 190,75 220,60 250,65 280,45 310,48 340,30 370,35 395,15 420,10 420,130 0,130" fill="url(#chartGradient)" />
+                  <polyline id="chartPolyLine" points="0,110 20,105 45,115 70,100 100,85 130,90 160,70 190,75 220,60 250,65 280,45 310,48 340,30 370,35 395,15 420,10" fill="none" stroke="#00ed97" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  
+                  <!-- Interactive Dynamic Crosshair Line & Target Dot -->
+                  <line id="chartCrosshairLine" x1="420" y1="0" x2="420" y2="130" stroke="rgba(0, 237, 151, 0.45)" stroke-width="1.5" stroke-dasharray="3,3" opacity="0"/>
+                  <circle id="chartCrosshairDot" cx="420" cy="10" r="5" fill="#00ed97" stroke="#0b0b0c" stroke-width="2" opacity="0"/>
+                  
+                  <!-- Static Live Ping Beacon -->
+                  <circle cx="420" cy="10" r="4.5" fill="#00ed97" class="animate-ping"/>
+                  <circle id="chartPingDot" cx="420" cy="10" r="3.5" fill="#00ed97"/>
+                </svg>
+              </div>
+
+              <div class="flex justify-between items-center pt-3 font-mono text-[10.5px] text-ink-500 border-t border-white/5">
+                <span class="flex items-center gap-2">
+                  <span class="flex items-center gap-1.5"><span class="size-1.5 rounded-full bg-brand"></span><span id="chartFooterVol">Vol 24h: —</span></span>
+                  <span class="text-white/20">·</span>
+                  <span id="chartFooterLiq">Liq: —</span>
+                </span>
+                <a href="https://dexscreener.com/near/refv2-ni-2.nearlytrade.near:wrap.near:10000" target="_blank" rel="noopener noreferrer" class="text-brand font-semibold flex items-center gap-1.5 hover:text-lime-soft transition-colors">
+                  <span class="size-1.5 rounded-full bg-brand animate-pulse"></span>
+                  <span>DexScreener ↗</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Shard / Validator Node Grid (Die Flicker clone) with Holo Card & Cyber Bracket -->
+            <div class="holo-card cyber-bracket rounded-2xl border border-white/10 bg-ink-chip/95 p-6 shadow-2xl relative overflow-hidden">
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs text-ink-100 font-bold uppercase flex items-center gap-2">
+                  <span class="size-2 rounded-full bg-brand animate-pulse-glow"></span> 
+                  <span>Nightshade Shards & Validator Nodes</span>
+                </span>
+                <span class="font-mono text-[10.5px] text-brand font-bold uppercase bg-brand/10 border border-brand/25 px-2.5 py-0.5 rounded-full">
+                  100% Operational
+                </span>
+              </div>
+
+              <div class="relative grid grid-cols-12 gap-1.5 overflow-hidden p-2 rounded-xl bg-black/60 border border-white/5">
+                <div class="pointer-events-none absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-brand/40 to-transparent animate-scan"></div>
+                
+                <div class="aspect-square rounded-sm bg-brand/80 animate-die-flicker" style="animation-delay: 0.1s"></div>
+                <div class="aspect-square rounded-sm bg-brand/20 animate-die-flicker" style="animation-delay: 0.4s"></div>
+                <div class="aspect-square rounded-sm bg-brand/60 animate-die-flicker" style="animation-delay: 0.9s"></div>
+                <div class="aspect-square rounded-sm bg-brand/30 animate-die-flicker" style="animation-delay: 0.2s"></div>
+                <div class="aspect-square rounded-sm bg-brand/90 animate-die-flicker" style="animation-delay: 1.1s"></div>
+                <div class="aspect-square rounded-sm bg-brand/20 animate-die-flicker" style="animation-delay: 0.7s"></div>
+                <div class="aspect-square rounded-sm bg-brand/70 animate-die-flicker" style="animation-delay: 0.3s"></div>
+                <div class="aspect-square rounded-sm bg-brand/20 animate-die-flicker" style="animation-delay: 0.5s"></div>
+                <div class="aspect-square rounded-sm bg-brand/80 animate-die-flicker" style="animation-delay: 1.3s"></div>
+                <div class="aspect-square rounded-sm bg-brand/20 animate-die-flicker" style="animation-delay: 0.8s"></div>
+                <div class="aspect-square rounded-sm bg-brand/60 animate-die-flicker" style="animation-delay: 0.2s"></div>
+                <div class="aspect-square rounded-sm bg-brand/90 animate-die-flicker" style="animation-delay: 0.6s"></div>
+
+                <div class="aspect-square rounded-sm bg-brand/20 animate-die-flicker" style="animation-delay: 0.8s"></div>
+                <div class="aspect-square rounded-sm bg-brand/85 animate-die-flicker" style="animation-delay: 0.3s"></div>
+                <div class="aspect-square rounded-sm bg-brand/20 animate-die-flicker" style="animation-delay: 1.2s"></div>
+                <div class="aspect-square rounded-sm bg-brand/60 animate-die-flicker" style="animation-delay: 0.5s"></div>
+                <div class="aspect-square rounded-sm bg-brand/20 animate-die-flicker" style="animation-delay: 0.9s"></div>
+                <div class="aspect-square rounded-sm bg-brand/75 animate-die-flicker" style="animation-delay: 0.1s"></div>
+                <div class="aspect-square rounded-sm bg-brand/30 animate-die-flicker" style="animation-delay: 0.7s"></div>
+                <div class="aspect-square rounded-sm bg-brand/90 animate-die-flicker" style="animation-delay: 1.4s"></div>
+                <div class="aspect-square rounded-sm bg-brand/20 animate-die-flicker" style="animation-delay: 0.4s"></div>
+                <div class="aspect-square rounded-sm bg-brand/70 animate-die-flicker" style="animation-delay: 1.0s"></div>
+                <div class="aspect-square rounded-sm bg-brand/20 animate-die-flicker" style="animation-delay: 0.2s"></div>
+                <div class="aspect-square rounded-sm bg-brand/85 animate-die-flicker" style="animation-delay: 0.6s"></div>
+              </div>
+
+              <!-- Validator Telemetry Bar -->
+              <div class="mt-3.5 flex items-center justify-between text-[11px] font-mono text-ink-500 pt-3 border-t border-white/5">
+                <span class="flex items-center gap-1.5"><span class="size-1.5 rounded-full bg-brand"></span>Nightshade Shards: 6 Active</span>
+                <span class="text-ink-400">Finality: <strong class="text-brand">&lt;1.2s</strong></span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- THREE THINGS SECTION                                     -->
+    <!-- ======================================================== -->
+    <section id="how-it-works" class="relative py-24 md:py-32 border-t border-white/10 bg-ink">
+      <div class="mx-auto max-w-[1240px] px-6 md:px-8">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 border-b border-white/10 pb-8">
+          <div>
+            <p class="font-mono text-xs tracking-[0.2em] text-brand uppercase mb-2">How It Works</p>
+            <h2 class="font-display text-[clamp(34px,4.5vw,56px)] leading-none tracking-tight text-ink-50">
+              Three things,<br/>then you're caught up.
+            </h2>
+          </div>
+          <p class="mt-4 md:mt-0 font-mono text-xs tracking-[0.12em] text-ink-500 uppercase">
+            01 · LAUNCH & PAIR &nbsp;/&nbsp; 02 · 75% HOLDER REWARD &nbsp;/&nbsp; 03 · 25% CREATOR EXPANSION
+          </p>
+        </div>
+
+        <div class="flex flex-col divide-y divide-white/10">
+
+          <!-- Card 01: Launch on nearly.trade -->
+          <article class="reveal-item grid grid-cols-1 md:grid-cols-2 items-center gap-10 py-14">
+            <div class="flex gap-6">
+              <span class="font-display text-2xl text-brand">01</span>
+              <div>
+                <h3 class="font-display text-2xl md:text-3xl text-ink-50 mb-4">
+                  $NI Launches Exclusively on nearly.trade
+                </h3>
+                <p class="text-ink-400 text-base md:text-lg leading-relaxed max-w-[480px]">
+                  Fair launch bonding curve mechanics paired natively with NEAR on the NEAR Protocol. Instant liquidity, sub-second finality, and microscopic gas fees mean traders can swap without losing value to network slippage.
+                </p>
+              </div>
+            </div>
+            <div>
+              <div class="holo-card cyber-bracket relative h-64 md:h-72 overflow-hidden rounded-2xl border border-white/10 bg-ink-chip flex items-center justify-center p-6 group">
+                <!-- Ambient radial background glow -->
+                <div class="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none"></div>
+                <div class="absolute size-44 rounded-full bg-brand/15 blur-3xl pointer-events-none group-hover:bg-brand/25 transition-all duration-500"></div>
+
+                <div class="relative z-10 flex flex-col items-center text-center">
+                  <!-- Animated Cyber NEAR Logo Centerpiece -->
+                  <div class="relative flex items-center justify-center mb-4 size-24 sm:size-28">
+                    <!-- Outer Dashed Orbit Ring (Clockwise) -->
+                    <div class="absolute inset-0 rounded-full border border-dashed border-brand/40 near-ring-orbit pointer-events-none"></div>
+                    
+                    <!-- Inner Counter-rotating Cyber Ring with satellite dot -->
+                    <div class="absolute inset-2 rounded-full border border-brand/30 near-ring-orbit-reverse pointer-events-none">
+                      <span class="absolute -top-1 left-1/2 -translate-x-1/2 size-2 rounded-full bg-brand shadow-[0_0_8px_#00ed97]"></span>
+                    </div>
+
+                    <!-- Glowing Pulsing Energy Orb -->
+                    <div class="absolute inset-4 rounded-full bg-gradient-to-tr from-brand/20 via-brand/10 to-transparent near-glow-aura pointer-events-none"></div>
+
+                    <!-- Core NEAR Logo Container -->
+                    <div class="relative z-10 size-14 sm:size-16 rounded-full bg-ink/90 border-2 border-brand flex items-center justify-center shadow-[0_0_20px_rgba(0,237,151,0.5)] backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
+                      <img src="assets/near.png" alt="NEAR Protocol Logo" class="size-8 sm:size-9 object-contain drop-shadow-[0_0_10px_rgba(0,237,151,0.8)]" />
+                    </div>
+                  </div>
+
+                  <h4 class="font-display text-xl text-ink-50">nearly.trade</h4>
+                  <p class="font-mono text-xs text-brand mt-1 uppercase tracking-wider">Official Bonding Curve & DEX</p>
+                  <a href="https://nearly.trade/ni-2.nearlytrade.near" target="_blank" rel="noopener noreferrer" class="mt-3.5 inline-flex items-center gap-1.5 rounded-full bg-brand/20 hover:bg-brand text-brand hover:text-ink px-4 py-1.5 font-mono text-xs transition-all font-semibold shadow-sm">
+                    <span>Visit Launchpad</span>
+                    <svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 02: 75% Holders Tax & Vault Growth -->
+          <article class="reveal-item grid grid-cols-1 md:grid-cols-2 items-center gap-10 py-14">
+            <div class="flex gap-6 md:order-2">
+              <span class="font-display text-2xl text-brand">02</span>
+              <div>
+                <h3 class="font-display text-2xl md:text-3xl text-ink-50 mb-4">
+                  4% Tax Feeds Native Near Coin Rewards
+                </h3>
+                <p class="text-ink-400 text-base md:text-lg leading-relaxed max-w-[480px]">
+                  With a flat <strong class="text-brand">4% buy and sell tax</strong>, every trade routes <strong class="text-brand">75%</strong> of the collected fee (3% net) directly into the Holder Reward Pool. Holders accumulate real, blue-chip native NEAR coin passively in their wallets simply for holding $NI.
+                </p>
+              </div>
+            </div>
+            <div class="md:order-1">
+              <div class="holo-card cyber-bracket relative flex h-64 md:h-72 items-center justify-center overflow-hidden rounded-2xl border border-brand/30 bg-gradient-to-br from-[#121c17] to-ink p-6">
+                <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
+                <div class="relative flex items-end gap-3 h-44 animate-bob">
+                  <div class="w-8 md:w-10 rounded-t bg-brand/30 h-[30%]"></div>
+                  <div class="w-8 md:w-10 rounded-t bg-brand/45 h-[48%]"></div>
+                  <div class="w-8 md:w-10 rounded-t bg-brand/60 h-[66%]"></div>
+                  <div class="w-8 md:w-10 rounded-t bg-brand/80 h-[82%]"></div>
+                  <div class="w-8 md:w-10 rounded-t bg-brand h-[100%] shadow-[0_0_20px_rgba(0,237,151,0.6)]"></div>
+                  <img src="assets/ni-logo.png" alt="Near Inu Icon" class="size-12 rounded-full border-2 border-brand self-start ml-2" />
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 03: 25% Creator Tax for Expansion -->
+          <article class="reveal-item grid grid-cols-1 md:grid-cols-2 items-center gap-10 py-14">
+            <div class="flex gap-6">
+              <span class="font-display text-2xl text-brand">03</span>
+              <div>
+                <h3 class="font-display text-2xl md:text-3xl text-ink-50 mb-4">
+                  25% Creator Tax Fuels Continuous Expansion
+                </h3>
+                <p class="text-ink-400 text-base md:text-lg leading-relaxed max-w-[480px]">
+                  The remaining <strong class="text-brand">25%</strong> of the 4% tax (1% net) is dedicated to continuous community marketing, strategic NEAR ecosystem partnerships, DEX liquidity deepening, and top-tier exchange listings.
+                </p>
+              </div>
+            </div>
+            <div>
+              <div class="holo-card cyber-bracket relative h-64 md:h-72 overflow-hidden rounded-2xl border border-white/10 bg-ink-chip p-6 flex flex-col justify-center shadow-xl">
+                <div class="space-y-4">
+                  <div>
+                    <div class="flex justify-between font-mono text-xs mb-1">
+                      <span class="text-brand font-bold flex items-center gap-1.5"><span class="size-1.5 rounded-full bg-brand animate-pulse"></span>Holder Rewards Pool</span>
+                      <span class="text-brand font-bold">75%</span>
+                    </div>
+                    <div class="h-3.5 w-full bg-white/5 rounded-full overflow-hidden p-0.5 border border-white/10">
+                      <div class="h-full bg-gradient-to-r from-brand to-lime-soft rounded-full shadow-[0_0_12px_rgba(0,237,151,0.6)]" style="width: 75%"></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="flex justify-between font-mono text-xs mb-1">
+                      <span class="text-ink-300 font-bold">Creator, Marketing & Buybacks</span>
+                      <span class="text-ink-300">25%</span>
+                    </div>
+                    <div class="h-3 w-full bg-white/5 rounded-full overflow-hidden">
+                      <div class="h-full bg-ink-400 rounded-full" style="width: 25%"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-6 flex items-center justify-around border-t border-white/10 pt-4 font-mono text-xs text-ink-400">
+                  <div class="text-center">
+                    <span class="block text-brand font-bold text-sm">0% Burn Loss</span>
+                    <span>100% Value Kept</span>
+                  </div>
+                  <div class="text-center">
+                    <span class="block text-ink-50 font-bold text-sm">Automated</span>
+                    <span>Direct Onchain</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- HIGH-DENSITY PROTOCOL SPECIFICATION RIBBON                -->
+    <!-- (Exact Artificial Doge spec strip clone)                  -->
+    <!-- ======================================================== -->
+    <div class="relative z-20 mx-auto max-w-[1240px] px-6 md:px-8 -mb-10 sm:-mb-14">
+      <div class="grid grid-cols-2 md:grid-cols-4 rounded-2xl border border-brand/35 bg-ink-chip/95 p-1 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] divide-y md:divide-y-0 md:divide-x divide-white/10 glass-border-glow">
+        
+        <div class="p-5 sm:p-6 text-left">
+          <div class="flex items-center gap-2 mb-1.5">
+            <span class="h-1.5 w-1.5 rounded-full bg-brand animate-pulse"></span>
+            <span class="font-mono text-[10px] text-ink-500 uppercase tracking-widest">Total Supply</span>
+          </div>
+          <p class="font-display text-2xl sm:text-3xl text-ink-50 font-bold tracking-tight">1,000,000,000</p>
+          <p class="font-mono text-[11px] text-brand mt-1">1B Minted · No Inflation</p>
+        </div>
+
+        <div class="p-5 sm:p-6 text-left">
+          <div class="flex items-center gap-2 mb-1.5">
+            <span class="h-1.5 w-1.5 rounded-full bg-brand"></span>
+            <span class="font-mono text-[10px] text-ink-500 uppercase tracking-widest">Buy & Sell Tax</span>
+          </div>
+          <p class="font-display text-2xl sm:text-3xl text-brand font-bold tracking-tight">4.0% <span class="font-mono text-sm text-ink-400">FLAT</span></p>
+          <p class="font-mono text-[11px] text-ink-400 mt-1">75% Holders · 25% Creator</p>
+        </div>
+
+        <div class="p-5 sm:p-6 text-left">
+          <div class="flex items-center gap-2 mb-1.5">
+            <span class="h-1.5 w-1.5 rounded-full bg-amber-400"></span>
+            <span class="font-mono text-[10px] text-ink-500 uppercase tracking-widest">Holders Split</span>
+          </div>
+          <p class="font-display text-2xl sm:text-3xl text-ink-50 font-bold tracking-tight">3.0% <span class="font-mono text-sm text-brand">NEAR</span></p>
+          <p class="font-mono text-[11px] text-ink-400 mt-1">Direct Auto-Redistribution</p>
+        </div>
+
+        <div class="p-5 sm:p-6 text-left">
+          <div class="flex items-center gap-2 mb-1.5">
+            <span class="h-1.5 w-1.5 rounded-full bg-brand animate-pulse-glow"></span>
+            <span class="font-mono text-[10px] text-ink-500 uppercase tracking-widest">Settlement Layer</span>
+          </div>
+          <p class="font-display text-2xl sm:text-3xl text-brand font-bold tracking-tight">NEAR L1</p>
+          <p class="font-mono text-[11px] text-ink-400 mt-1">Nightshade · &lt; 1.2s Finality</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- HOW TO BUY SECTION                                       -->
+    <!-- ======================================================== -->
+    <section class="relative pt-32 pb-24 md:pt-44 md:pb-36 border-t border-white/10 bg-ink-soft overflow-hidden" id="how">
+      <div class="mx-auto max-w-[1240px] px-6 md:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-[38fr_62fr] gap-12 lg:gap-16 items-start">
+          
+          <!-- Sticky Rail Column (Left) -->
+          <div class="lg:sticky lg:top-28">
+            
+            <!-- Eyebrow with glowing green dot -->
+            <p class="flex items-center gap-2.5 font-mono text-xs tracking-[0.18em] text-brand uppercase mb-4">
+              <span class="size-2 rounded-full bg-brand animate-pulse-glow"></span>
+              GETTING SOME
+            </p>
+
+            <!-- Headline: Three lines. No more than that. -->
+            <h2 class="font-display text-[clamp(34px,4.5vw,58px)] leading-[0.96] tracking-[-0.03em] text-ink-50">
+              Three lines. No <br/>
+              more than that.
+            </h2>
+
+            <!-- Rail Index: 01 WALLET / 02 ADDRESS / 03 SWAP with amber horizontal ticks and interactive smooth scroll -->
+            <div class="mt-8 flex flex-col gap-3.5 font-mono text-xs tracking-[0.14em] text-ink-400 uppercase">
+              <a href="#step-01" class="group flex items-center gap-3 transition-colors hover:text-brand">
+                <span class="w-6 h-[1.5px] bg-[#f0b25f] flex-none transition-all group-hover:w-8 group-hover:bg-brand"></span>
+                <span class="transition-colors group-hover:text-ink-50">01 WALLET</span>
+              </a>
+              <a href="#step-02" class="group flex items-center gap-3 transition-colors hover:text-brand">
+                <span class="w-6 h-[1.5px] bg-[#f0b25f] flex-none transition-all group-hover:w-8 group-hover:bg-brand"></span>
+                <span class="transition-colors group-hover:text-ink-50">02 ADDRESS</span>
+              </a>
+              <a href="#step-03" class="group flex items-center gap-3 transition-colors hover:text-brand">
+                <span class="w-6 h-[1.5px] bg-[#f0b25f] flex-none transition-all group-hover:w-8 group-hover:bg-brand"></span>
+                <span class="transition-colors group-hover:text-ink-50">03 SWAP</span>
+              </a>
+            </div>
+
+            <!-- Rail Note -->
+            <p class="mt-10 pt-6 border-t border-white/10 font-mono text-xs leading-relaxed text-ink-500 max-w-[32ch]">
+              There is no fourth line. If somebody sends you one in your DMs or replies, it is not from here.
+            </p>
+
+            <!-- Quick Specs Card -->
+            <div class="mt-8 rounded-2xl border border-white/10 bg-ink-chip/90 backdrop-blur-md p-5 sm:p-6 max-w-[340px] hidden sm:block shadow-lg">
+              <div class="flex items-center justify-between text-ink-300 font-mono text-[11px] uppercase tracking-wider mb-4 pb-3 border-b border-white/10">
+                <span class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-brand animate-pulse"></span> Network Specs</span>
+                <span class="text-brand font-bold bg-brand/10 border border-brand/20 px-2 py-0.5 rounded">NEAR L1</span>
+              </div>
+              <div class="grid grid-cols-2 gap-x-5 gap-y-3.5 text-xs font-mono">
+                <div>
+                  <span class="text-[10px] text-ink-500 block uppercase tracking-wider mb-0.5">Block Time</span>
+                  <span class="text-ink-100 font-bold text-[13px]">&lt; 1.2s</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-ink-500 block uppercase tracking-wider mb-0.5">Average Fee</span>
+                  <span class="text-brand font-bold text-[13px]">&lt; $0.005</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-ink-500 block uppercase tracking-wider mb-0.5">Reward Auto-Pay</span>
+                  <span class="text-brand font-bold text-[13px]">4% Tax (75% to Holders)</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-ink-500 block uppercase tracking-wider mb-0.5">DEX Routing</span>
+                  <span class="text-ink-100 font-bold text-[13px]">nearly.trade</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Step Cards Stack (Right) -->
+          <div class="flex flex-col gap-6">
+
+            <!-- Step 01 -->
+            <article id="step-01" class="holo-card cyber-bracket group relative rounded-2xl border border-white/10 bg-ink-chip/95 p-6 md:p-8 pl-14 sm:pl-20 md:pl-24 transition-all duration-300 hover:-translate-y-1 hover:border-brand/50 hover:bg-ink-surface hover:shadow-[0_12px_32px_rgba(0,0,0,0.6)]">
+              <!-- Hanging Outlined Large Number 01 -->
+              <span class="absolute left-3.5 sm:left-5 md:left-6 top-5 md:top-6 font-display text-4xl md:text-5xl leading-none text-transparent transition-all select-none group-hover:[-webkit-text-stroke-color:#00ed97]" style="-webkit-text-stroke: 1.5px #49578A;">
+                01
+              </span>
+              
+              <div class="flex items-center gap-2 mb-2">
+                <span class="font-mono text-[10px] text-brand uppercase font-bold tracking-widest bg-brand/10 border border-brand/20 px-2 py-0.5 rounded-full">Phase 1</span>
+                <span class="font-mono text-[11px] text-ink-500">Self-Custodial Setup</span>
+              </div>
+
+              <h3 class="font-display text-xl md:text-2xl text-ink-50 leading-tight mb-2.5 transition-colors group-hover:text-white">
+                Get a wallet that speaks NEAR chain.
+              </h3>
+              
+              <p class="text-sm md:text-base text-ink-400 leading-relaxed font-sans max-w-[54ch]">
+                Fund it before you need it, not while you need it. Every person who has ever rushed this part has paid for the privilege. Install a verified NEAR wallet and deposit native NEAR coin.
+              </p>
+
+              <!-- Supported Wallets Badges -->
+              <div class="mt-5 pt-4 border-t border-white/5 flex flex-col gap-2">
+                <span class="font-mono text-[11px] text-ink-500 uppercase tracking-wider">Recommended Wallets:</span>
+                <div class="flex flex-wrap items-center gap-2">
+                  <a href="https://meteorwallet.app" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-white/10 bg-ink-surface px-3 py-1.5 font-mono text-[11px] text-ink-200 hover:text-brand hover:border-brand/40 transition-all flex items-center gap-1.5 shadow-sm">
+                    <span class="h-1.5 w-1.5 rounded-full bg-brand animate-pulse"></span>
+                    <span>Meteor Wallet</span>
+                  </a>
+                  <a href="https://herewallet.app" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-white/10 bg-ink-surface px-3 py-1.5 font-mono text-[11px] text-ink-200 hover:text-brand hover:border-brand/40 transition-all flex items-center gap-1.5 shadow-sm">
+                    <span class="h-1.5 w-1.5 rounded-full bg-amber-400"></span>
+                    <span>HERE Wallet</span>
+                  </a>
+                  <a href="https://sender.org" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-white/10 bg-ink-surface px-3 py-1.5 font-mono text-[11px] text-ink-200 hover:text-brand hover:border-brand/40 transition-all flex items-center gap-1.5 shadow-sm">
+                    <span class="h-1.5 w-1.5 rounded-full bg-blue-400"></span>
+                    <span>Sender Wallet</span>
+                  </a>
+                  <span class="rounded-lg border border-white/5 bg-ink-subtle px-3 py-1.5 font-mono text-[11px] text-ink-500">
+                    NEAR Mobile
+                  </span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Step 02 -->
+            <article id="step-02" class="holo-card cyber-bracket group relative rounded-2xl border border-white/10 bg-ink-chip/95 p-6 md:p-8 pl-14 sm:pl-20 md:pl-24 transition-all duration-300 hover:-translate-y-1 hover:border-brand/50 hover:bg-ink-surface hover:shadow-[0_12px_32px_rgba(0,0,0,0.6)]">
+              <!-- Hanging Outlined Large Number 02 -->
+              <span class="absolute left-3.5 sm:left-5 md:left-6 top-5 md:top-6 font-display text-4xl md:text-5xl leading-none text-transparent transition-all select-none group-hover:[-webkit-text-stroke-color:#00ed97]" style="-webkit-text-stroke: 1.5px #49578A;">
+                02
+              </span>
+              
+              <div class="flex items-center gap-2 mb-2">
+                <span class="font-mono text-[10px] text-brand uppercase font-bold tracking-widest bg-brand/10 border border-brand/20 px-2 py-0.5 rounded-full">Phase 2</span>
+                <span class="font-mono text-[11px] text-ink-500">Address Verification</span>
+              </div>
+
+              <h3 class="font-display text-xl md:text-2xl text-ink-50 leading-tight mb-2.5 transition-colors group-hover:text-white">
+                Take the address off this page.
+              </h3>
+              
+              <p class="text-sm md:text-base text-ink-400 leading-relaxed font-sans max-w-[54ch]">
+                This page is where it goes first. An address that arrives in your telegram DMs, replies, or inbox belongs to somebody else, and they know exactly what they are doing.
+              </p>
+              
+              <!-- Address Verification Box with Character Match Indicator -->
+              <div class="mt-5 rounded-xl border border-brand/30 bg-brand/5 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-inner">
+                <div class="flex items-center gap-3 min-w-0">
+                  <span class="font-mono text-[10px] text-brand font-bold uppercase bg-brand/20 px-2 py-0.5 rounded border border-brand/30">TOKEN CA</span>
+                  <div class="min-w-0">
+                    <span class="font-mono text-xs sm:text-sm text-ink-100 font-semibold truncate block select-all">ni-2.nearlytrade.near</span>
+                    <span class="font-mono text-[10px] text-ink-500 block">Match character-by-character on nearly.trade</span>
+                  </div>
+                </div>
+                <button onclick="copyText('ni-2.nearlytrade.near', this)" type="button" class="cursor-pointer inline-flex items-center justify-center gap-2 rounded-full bg-brand px-5 py-2 font-display text-xs text-ink font-bold hover:bg-lime-soft active:scale-95 transition-all flex-none shadow-md">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                  <span>Copy Address</span>
+                </button>
+              </div>
+            </article>
+
+            <!-- Step 03 -->
+            <article id="step-03" class="holo-card cyber-bracket group relative rounded-2xl border border-white/10 bg-ink-chip/95 p-6 md:p-8 pl-14 sm:pl-20 md:pl-24 transition-all duration-300 hover:-translate-y-1 hover:border-brand/50 hover:bg-ink-surface hover:shadow-[0_12px_32px_rgba(0,0,0,0.6)]">
+              <!-- Hanging Outlined Large Number 03 -->
+              <span class="absolute left-3.5 sm:left-5 md:left-6 top-5 md:top-6 font-display text-4xl md:text-5xl leading-none text-transparent transition-all select-none group-hover:[-webkit-text-stroke-color:#00ed97]" style="-webkit-text-stroke: 1.5px #49578A;">
+                03
+              </span>
+              
+              <div class="flex items-center gap-2 mb-2">
+                <span class="font-mono text-[10px] text-brand uppercase font-bold tracking-widest bg-brand/10 border border-brand/20 px-2 py-0.5 rounded-full">Phase 3</span>
+                <span class="font-mono text-[11px] text-ink-500">Execution & Yield</span>
+              </div>
+
+              <h3 class="font-display text-xl md:text-2xl text-ink-50 leading-tight mb-2.5 transition-colors group-hover:text-white">
+                Swap, then close the tab.
+              </h3>
+              
+              <p class="text-sm md:text-base text-ink-400 leading-relaxed font-sans max-w-[54ch]">
+                A flat 4% buy and sell tax applies on every swap: 75% feeds native NEAR coin rewards straight back into your wallet, and 25% fuels ecosystem growth. The swap link is right below. Watching it all night is the dog's job, not yours.
+              </p>
+
+              <!-- Step 3 Action CTAs -->
+              <div class="mt-5 pt-4 border-t border-white/5 flex flex-wrap items-center gap-3">
+                <a href="https://nearly.trade/ni-2.nearlytrade.near" target="_blank" rel="noopener noreferrer" class="group/btn inline-flex items-center gap-2 rounded-full bg-brand text-ink font-display text-xs md:text-sm px-6 py-2.5 hover:bg-lime-soft hover:shadow-[0_0_24px_rgba(0,237,151,0.45)] transition-all font-bold">
+                  <span>Launch nearly.trade</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="size-3.5 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </a>
+                
+                <a href="#vault" class="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-ink-surface px-4 py-2 font-mono text-xs text-ink-300 hover:text-brand hover:border-brand/40 transition-all">
+                  <span class="h-1.5 w-1.5 rounded-full bg-brand animate-pulse"></span>
+                  <span>Track Rewards Vault</span>
+                  <svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+              </div>
+            </article>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- CURATED MEME & ART VAULT SHOWCASE SECTION               -->
+    <!-- ======================================================== -->
+    <section id="memes" class="relative py-24 md:py-32 border-t border-white/10 bg-ink overflow-hidden">
+      <div class="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none"></div>
+      
+      <!-- Ambient Glow Behind Gallery -->
+      <div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[600px] rounded-full bg-brand/10 blur-[140px]"></div>
+
+      <div class="relative mx-auto max-w-[1240px] px-6 md:px-8">
+        
+        <!-- Section Header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-12 border-b border-white/10">
+          <div>
+            <div class="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] text-brand uppercase font-bold mb-3">
+              <span class="size-2 rounded-full bg-brand animate-pulse-glow"></span>
+              COMMUNITY MEME VAULT
+            </div>
+            <h2 class="font-display text-[clamp(32px,4.5vw,56px)] leading-[0.98] tracking-[-0.03em] text-ink-50">
+              Compute is funny.<br/>
+              <span class="text-brand">Memes are hard currency.</span>
+            </h2>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <span class="font-mono text-xs text-ink-400 bg-ink-chip px-3.5 py-1.5 rounded-full border border-white/10 flex items-center gap-2">
+              <span class="size-1.5 rounded-full bg-brand"></span>
+              <span>50+ Original Artworks</span>
+            </span>
+            <a href="memes.html" class="group inline-flex items-center justify-center gap-2 rounded-full bg-brand px-6 py-2.5 font-display text-xs text-ink font-bold hover:bg-lime-soft hover:shadow-[0_0_24px_rgba(0,237,151,0.35)] active:scale-95 transition-all">
+              <span>Explore All 50+ Memes</span>
+              <svg class="size-3.5 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Curated 8-Card Showcase Grid -->
+        <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          <!-- Card 1 -->
+          <div class="group holo-card cyber-bracket relative rounded-2xl border border-white/10 bg-ink-chip/90 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/50 hover:shadow-[0_16px_36px_rgba(0,237,151,0.2)]">
+            <div class="relative aspect-square overflow-hidden bg-black/40 meme-scanline">
+              <img src="memes/ni-art-1.jpg" alt="Long Compute Doge" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='assets/ni-logo.png'" />
+              <div class="absolute top-3 left-3 rounded-lg border border-brand/40 bg-ink/80 px-2 py-0.5 font-mono text-[11px] font-bold text-brand backdrop-blur-md">
+                #01
+              </div>
+            </div>
+            <div class="p-4 flex items-center justify-between border-t border-white/5 gap-2">
+              <div class="min-w-0 flex-1">
+                <h3 class="font-display text-sm text-ink-50 truncate group-hover:text-brand transition-colors">Long Compute Doge</h3>
+                <span class="font-mono text-[10px] text-ink-500 uppercase tracking-wider">Mascot · Neural</span>
+              </div>
+              <div class="flex items-center gap-1.5 flex-none">
+                <a href="memes/ni-art-1.jpg" download title="Download Artwork" class="size-8 rounded-lg border border-white/10 bg-ink-surface flex items-center justify-center text-ink-300 hover:text-brand hover:border-brand/40 transition-all flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </a>
+                <button onclick="copyMemeLink('ni-art-1.jpg', this)" title="Copy Link" class="size-8 rounded-lg border border-white/10 bg-ink-surface flex items-center justify-center text-ink-300 hover:text-brand hover:border-brand/40 transition-all flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="group holo-card cyber-bracket relative rounded-2xl border border-white/10 bg-ink-chip/90 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/50 hover:shadow-[0_16px_36px_rgba(0,237,151,0.2)]">
+            <div class="relative aspect-square overflow-hidden bg-black/40 meme-scanline">
+              <img src="memes/ni-art-2.jpg" alt="Bag of Native NEAR" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='assets/ni-logo.png'" />
+              <div class="absolute top-3 left-3 rounded-lg border border-brand/40 bg-ink/80 px-2 py-0.5 font-mono text-[11px] font-bold text-brand backdrop-blur-md">
+                #02
+              </div>
+            </div>
+            <div class="p-4 flex items-center justify-between border-t border-white/5 gap-2">
+              <div class="min-w-0 flex-1">
+                <h3 class="font-display text-sm text-ink-50 truncate group-hover:text-brand transition-colors">Bag of Native NEAR</h3>
+                <span class="font-mono text-[10px] text-ink-500 uppercase tracking-wider">75% Tax · L1 Yield</span>
+              </div>
+              <div class="flex items-center gap-1.5 flex-none">
+                <a href="memes/ni-art-2.jpg" download title="Download Artwork" class="size-8 rounded-lg border border-white/10 bg-ink-surface flex items-center justify-center text-ink-300 hover:text-brand hover:border-brand/40 transition-all flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </a>
+                <button onclick="copyMemeLink('ni-art-2.jpg', this)" title="Copy Link" class="size-8 rounded-lg border border-white/10 bg-ink-surface flex items-center justify-center text-ink-300 hover:text-brand hover:border-brand/40 transition-all flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="group holo-card cyber-bracket relative rounded-2xl border border-white/10 bg-ink-chip/90 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/50 hover:shadow-[0_16px_36px_rgba(0,237,151,0.2)]">
+            <div class="relative aspect-square overflow-hidden bg-black/40 meme-scanline">
+              <img src="memes/ni-art-3.jpg" alt="Nearly.Trade Cockpit" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='assets/ni-logo.png'" />
+              <div class="absolute top-3 left-3 rounded-lg border border-brand/40 bg-ink/80 px-2 py-0.5 font-mono text-[11px] font-bold text-brand backdrop-blur-md">
+                #03
+              </div>
+            </div>
+            <div class="p-4 flex items-center justify-between border-t border-white/5 gap-2">
+              <div class="min-w-0 flex-1">
+                <h3 class="font-display text-sm text-ink-50 truncate group-hover:text-brand transition-colors">Nearly.Trade Cockpit</h3>
+                <span class="font-mono text-[10px] text-ink-500 uppercase tracking-wider">Bonding Curve · Swap</span>
+              </div>
+              <div class="flex items-center gap-1.5 flex-none">
+                <a href="memes/ni-art-3.jpg" download title="Download Artwork" class="size-8 rounded-lg border border-white/10 bg-ink-surface flex items-center justify-center text-ink-300 hover:text-brand hover:border-brand/40 transition-all flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </a>
+                <button onclick="copyMemeLink('ni-art-3.jpg', this)" title="Copy Link" class="size-8 rounded-lg border border-white/10 bg-ink-surface flex items-center justify-center text-ink-300 hover:text-brand hover:border-brand/40 transition-all flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="group holo-card cyber-bracket relative rounded-2xl border border-white/10 bg-ink-chip/90 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/50 hover:shadow-[0_16px_36px_rgba(0,237,151,0.2)]">
+            <div class="relative aspect-square overflow-hidden bg-black/40 meme-scanline">
+              <img src="memes/ni-art-4.jpg" alt="Diamond Paws Cyber" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='assets/ni-logo.png'" />
+              <div class="absolute top-3 left-3 rounded-lg border border-brand/40 bg-ink/80 px-2 py-0.5 font-mono text-[11px] font-bold text-brand backdrop-blur-md">
+                #04
+              </div>
+            </div>
+            <div class="p-4 flex items-center justify-between border-t border-white/5 gap-2">
+              <div class="min-w-0 flex-1">
+                <h3 class="font-display text-sm text-ink-50 truncate group-hover:text-brand transition-colors">Diamond Paws Cyber</h3>
+                <span class="font-mono text-[10px] text-ink-500 uppercase tracking-wider">Diamond Hands · HODL</span>
+              </div>
+              <div class="flex items-center gap-1.5 flex-none">
+                <a href="memes/ni-art-4.jpg" download title="Download Artwork" class="size-8 rounded-lg border border-white/10 bg-ink-surface flex items-center justify-center text-ink-300 hover:text-brand hover:border-brand/40 transition-all flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </a>
+                <button onclick="copyMemeLink('ni-art-4.jpg', this)" title="Copy Link" class="size-8 rounded-lg border border-white/10 bg-ink-surface flex items-center justify-center text-ink-300 hover:text-brand hover:border-brand/40 transition-all flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="group holo-card cyber-bracket relative rounded-2xl border border-white/10 bg-ink-chip/90 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/50 hover:shadow-[0_16px_36px_rgba(0,237,151,0.2)]">
+            <div class="relative aspect-square overflow-hidden bg-black/40 meme-scanline">
+              <img src="memes/ni-art-5.jpg" alt="Sharding Velocity" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='assets/ni-logo.png'" />
+              <div class="absolute top-3 left-3 rounded-lg border border-brand/40 bg-ink/80 px-2 py-0.5 font-mono text-[11px] font-bold text-brand backdrop-blur-md">
+                #05
+              </div>
+            </div>
+            <div class="p-4 flex items-center justify-between border-t border-white/5 gap-2">
+              <div class="min-w-0 flex-1">
+                <h3 class="font-display text-sm text-ink-50 truncate group-hover:text-brand transition-colors">Sharding Velocity</h3>
+                <span class="font-mono text-[10px] text-ink-500 uppercase tracking-wider">Nightshade · &lt;1.2s</span>
+              </div>
+              <div class="flex items-center gap-1.5 flex-none">
+                <a href="memes/ni-art-5.jpg" download title="Download Artwork" class="size-8 rounded-lg border border-white/10 bg-ink-surface flex items-center justify-center text-ink-300 hover:text-brand hover:border-brand/40 transition-all flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </a>
+                <button onclick="copyMemeLink('ni-art-5.jpg', this)" title="Copy Link" class="size-8 rounded-lg border border-white/10 bg-ink-surface flex items-center justify-center text-ink-300 hover:text-brand hover:border-brand/40 transition-all flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="group holo-card cyber-bracket relative rounded-2xl border border-white/10 bg-ink-chip/90 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/50 hover:shadow-[0_16px_36px_rgba(0,237,151,0.2)]">
+            <div class="relative aspect-square overflow-hidden bg-black/40 meme-scanline">
+              <img src="memes/ni-art-6.jpg" alt="Nightshade Visor" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='assets/ni-logo.png'" />
+              <div class="absolute top-3 left-3 rounded-lg border border-brand/40 bg-ink/80 px-2 py-0.5 font-mono text-[11px] font-bold text-brand backdrop-blur-md">
+                #06
+              </div>
+            </div>
+            <div class="p-4 flex items-center justify-between border-t border-white/5 gap-2">
+              <div class="min-w-0 flex-1">
+                <h3 class="font-display text-sm text-ink-50 truncate group-hover:text-brand transition-colors">Nightshade Visor</h3>
+                <span class="font-mono text-[10px] text-ink-500 uppercase tracking-wider">Cyberpunk · HUD</span>
+              </div>
+              <div class="flex items-center gap-1.5 flex-none">
+                <a href="memes/ni-art-6.jpg" download title="Download Artwork" class="size-8 rounded-lg border border-white/10 bg-ink-surface flex items-center justify-center text-ink-300 hover:text-brand hover:border-brand/40 transition-all flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </a>
+                <button onclick="copyMemeLink('ni-art-6.jpg', this)" title="Copy Link" class="size-8 rounded-lg border border-white/10 bg-ink-surface flex items-center justify-center text-ink-300 hover:text-brand hover:border-brand/40 transition-all flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 7 -->
+          <div class="group holo-card cyber-bracket relative rounded-2xl border border-white/10 bg-ink-chip/90 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/50 hover:shadow-[0_16px_36px_rgba(0,237,151,0.2)]">
+            <div class="relative aspect-square overflow-hidden bg-black/40 meme-scanline">
+              <img src="memes/ni-art-7.jpg" alt="Rewards Rain" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='assets/ni-logo.png'" />
+              <div class="absolute top-3 left-3 rounded-lg border border-brand/40 bg-ink/80 px-2 py-0.5 font-mono text-[11px] font-bold text-brand backdrop-blur-md">
+                #07
+              </div>
+            </div>
+            <div class="p-4 flex items-center justify-between border-t border-white/5 gap-2">
+              <div class="min-w-0 flex-1">
+                <h3 class="font-display text-sm text-ink-50 truncate group-hover:text-brand transition-colors">Rewards Rain</h3>
+                <span class="font-mono text-[10px] text-ink-500 uppercase tracking-wider">Accumulation · Vault</span>
+              </div>
+              <div class="flex items-center gap-1.5 flex-none">
+                <a href="memes/ni-art-7.jpg" download title="Download Artwork" class="size-8 rounded-lg border border-white/10 bg-ink-surface flex items-center justify-center text-ink-300 hover:text-brand hover:border-brand/40 transition-all flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </a>
+                <button onclick="copyMemeLink('ni-art-7.jpg', this)" title="Copy Link" class="size-8 rounded-lg border border-white/10 bg-ink-surface flex items-center justify-center text-ink-300 hover:text-brand hover:border-brand/40 transition-all flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 8: Jump to Full Gallery CTA Card -->
+          <a href="memes.html" class="group holo-card cyber-bracket relative rounded-2xl border border-brand/40 bg-gradient-to-br from-brand/15 via-ink-chip to-ink p-6 flex flex-col justify-between overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-brand hover:shadow-[0_16px_36px_rgba(0,237,151,0.25)]">
+            <div class="absolute -top-12 -right-12 size-36 rounded-full bg-brand/20 blur-2xl group-hover:bg-brand/35 transition-all"></div>
+            
+            <div>
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-brand/20 border border-brand/30 px-3 py-1 font-mono text-[11px] text-brand font-bold uppercase tracking-wider">
+                Full Gallery
+              </span>
+              <h3 class="font-display text-2xl text-ink-50 mt-4 leading-tight group-hover:text-brand transition-colors">
+                View All 50+ Community Memes
+              </h3>
+              <p class="font-sans text-xs text-ink-400 mt-2 leading-relaxed">
+                Filter by ID, search tags, shuffle, and download high-res files directly to share on X and Telegram.
+              </p>
+            </div>
+
+            <div class="mt-6 flex items-center justify-between border-t border-white/10 pt-4">
+              <span class="font-mono text-xs text-brand font-bold flex items-center gap-1.5">
+                <span>Enter Meme Vault</span>
+                <span class="transition-transform group-hover:translate-x-1">→</span>
+              </span>
+              <span class="size-8 rounded-full bg-brand flex items-center justify-center text-ink font-bold text-xs shadow">
+                50+
+              </span>
+            </div>
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- INTELLIGENCE HUB & PROTOCOL FAQ ACCORDION                -->
+    <!-- ======================================================== -->
+    <section id="faq" class="relative py-24 md:py-32 border-t border-white/10 bg-ink-subtle overflow-hidden">
+      <div class="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none"></div>
+
+      <div class="relative mx-auto max-w-[1240px] px-6 md:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-[40fr_60fr] gap-12 lg:gap-16 items-start">
+          
+          <!-- Left Column: Title & Context -->
+          <div class="lg:sticky lg:top-28">
+            <div class="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] text-brand uppercase mb-3 font-bold">
+              <span class="size-2 rounded-full bg-brand animate-pulse-glow"></span>
+              INTELLIGENCE HUB
+            </div>
+            
+            <h2 class="font-display text-[clamp(32px,4.5vw,56px)] leading-[0.98] tracking-[-0.03em] text-ink-50">
+              Answers before <br/>
+              you ask them.
+            </h2>
+            
+            <p class="mt-6 text-sm md:text-base leading-relaxed text-ink-400 font-sans max-w-[46ch]">
+              Near Inu operates autonomously on NEAR Protocol with a clear-cut 4% tax logic and verifiable onchain distribution. Here are the core specifications.
+            </p>
+
+            <div class="mt-8 rounded-2xl border border-brand/25 bg-ink-chip/95 p-5 max-w-[360px] shadow-lg">
+              <div class="flex items-center gap-3">
+                <div class="size-10 rounded-xl bg-brand/10 border border-brand/30 flex items-center justify-center text-brand flex-none">
+                  <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                </div>
+                <div>
+                  <div class="font-display text-sm text-ink-50">Need direct support?</div>
+                  <div class="font-mono text-xs text-ink-400">Join our open community</div>
+                </div>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+                <a href="https://t.me/nearinu" target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-brand hover:underline flex items-center gap-1.5 font-semibold">
+                  <span>Open Telegram</span>
+                  <svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+                <a href="https://x.com/nearinucom" target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-ink-400 hover:text-ink-200">
+                  Follow @NearInu
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Accordion Items Stack -->
+          <div class="flex flex-col gap-3.5">
+
+            <!-- FAQ 1: How do I receive $NEAR rewards? -->
+            <div class="faq-item active holo-card cyber-bracket rounded-2xl border border-white/10 bg-ink-chip/80 p-5 md:p-6 transition-all cursor-pointer" onclick="toggleFaq(this)">
+              <div class="flex items-center justify-between gap-4 select-none">
+                <span class="font-display text-base md:text-lg text-ink-50 flex items-center gap-3">
+                  <span class="font-mono text-xs text-brand font-bold bg-brand/10 border border-brand/20 px-2 py-0.5 rounded">01</span>
+                  <span>How do I receive $NEAR coin rewards?</span>
+                  <span class="hidden sm:inline-block font-mono text-[9.5px] uppercase tracking-wider text-brand bg-brand/10 px-2.5 py-0.5 rounded-full border border-brand/25">75% Yield</span>
+                </span>
+                <span class="faq-chevron size-6 rounded-full border border-white/10 bg-ink-surface flex items-center justify-center text-ink-400 transition-transform duration-300 flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </div>
+              <div class="faq-answer">
+                <p class="font-sans text-sm md:text-base text-ink-400 leading-relaxed border-t border-white/5 pt-3.5">
+                  Rewards are accrued directly from trades on <strong class="text-ink-100">nearly.trade</strong>. 75% of the flat 4% buy/sell tax (3% net) is converted into native $NEAR coin and made claimable or automatically credited according to your token holding ratio. You never need to lock or stake your tokens in third-party pools.
+                </p>
+              </div>
+            </div>
+
+            <!-- FAQ 2: What is nearly.trade? -->
+            <div class="faq-item holo-card cyber-bracket rounded-2xl border border-white/10 bg-ink-chip/80 p-5 md:p-6 transition-all cursor-pointer" onclick="toggleFaq(this)">
+              <div class="flex items-center justify-between gap-4 select-none">
+                <span class="font-display text-base md:text-lg text-ink-50 flex items-center gap-3">
+                  <span class="font-mono text-xs text-brand font-bold bg-brand/10 border border-brand/20 px-2 py-0.5 rounded">02</span>
+                  <span>What is nearly.trade and why launch there?</span>
+                  <span class="hidden sm:inline-block font-mono text-[9.5px] uppercase tracking-wider text-ink-300 bg-white/5 px-2.5 py-0.5 rounded-full border border-white/10">Fair Launch</span>
+                </span>
+                <span class="faq-chevron size-6 rounded-full border border-white/10 bg-ink-surface flex items-center justify-center text-ink-400 transition-transform duration-300 flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </div>
+              <div class="faq-answer">
+                <p class="font-sans text-sm md:text-base text-ink-400 leading-relaxed border-t border-white/5 pt-3.5">
+                  <strong class="text-ink-100">nearly.trade</strong> is NEAR Protocol's premier bonding curve fair-launch DEX. It ensures 100% fair distribution with no presales, team allocations, or insider sniper advantages. Once the bonding target is fulfilled, liquidity is programmatically locked forever.
+                </p>
+              </div>
+            </div>
+
+            <!-- FAQ 3: Why 4% tax? -->
+            <div class="faq-item holo-card cyber-bracket rounded-2xl border border-white/10 bg-ink-chip/80 p-5 md:p-6 transition-all cursor-pointer" onclick="toggleFaq(this)">
+              <div class="flex items-center justify-between gap-4 select-none">
+                <span class="font-display text-base md:text-lg text-ink-50 flex items-center gap-3">
+                  <span class="font-mono text-xs text-brand font-bold bg-brand/10 border border-brand/20 px-2 py-0.5 rounded">03</span>
+                  <span>How does the 4% tax breakdown work?</span>
+                  <span class="hidden sm:inline-block font-mono text-[9.5px] uppercase tracking-wider text-brand bg-brand/10 px-2.5 py-0.5 rounded-full border border-brand/25">Tokenomics</span>
+                </span>
+                <span class="faq-chevron size-6 rounded-full border border-white/10 bg-ink-surface flex items-center justify-center text-ink-400 transition-transform duration-300 flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </div>
+              <div class="faq-answer">
+                <p class="font-sans text-sm md:text-base text-ink-400 leading-relaxed border-t border-white/5 pt-3.5">
+                  Every buy and sell transaction incurs a flat 4% fee: <strong class="text-brand">75%</strong> (3% net) goes to the Holder Reward Pool, directly rewarded in native $NEAR coin. The remaining <strong class="text-brand">25%</strong> (1% net) is allocated to the creator for ongoing infrastructure, marketing campaigns, buybacks, and CEX listings.
+                </p>
+              </div>
+            </div>
+
+            <!-- FAQ 4: Which wallets can I use? -->
+            <div class="faq-item holo-card cyber-bracket rounded-2xl border border-white/10 bg-ink-chip/80 p-5 md:p-6 transition-all cursor-pointer" onclick="toggleFaq(this)">
+              <div class="flex items-center justify-between gap-4 select-none">
+                <span class="font-display text-base md:text-lg text-ink-50 flex items-center gap-3">
+                  <span class="font-mono text-xs text-brand font-bold bg-brand/10 border border-brand/20 px-2 py-0.5 rounded">04</span>
+                  <span>Which wallets support NEAR and $NI?</span>
+                  <span class="hidden sm:inline-block font-mono text-[9.5px] uppercase tracking-wider text-ink-300 bg-white/5 px-2.5 py-0.5 rounded-full border border-white/10">Wallets</span>
+                </span>
+                <span class="faq-chevron size-6 rounded-full border border-white/10 bg-ink-surface flex items-center justify-center text-ink-400 transition-transform duration-300 flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </div>
+              <div class="faq-answer">
+                <p class="font-sans text-sm md:text-base text-ink-400 leading-relaxed border-t border-white/5 pt-3.5">
+                  Any wallet natively compatible with NEAR Protocol works seamlessly. We recommend <strong class="text-ink-100">Meteor Wallet</strong>, <strong class="text-ink-100">HERE Wallet</strong> (mobile & Telegram wallet), or <strong class="text-ink-100">Sender Wallet</strong>. Simply connect your wallet to nearly.trade to swap or view balances.
+                </p>
+              </div>
+            </div>
+
+            <!-- FAQ 5: Is liquidity locked? -->
+            <div class="faq-item holo-card cyber-bracket rounded-2xl border border-white/10 bg-ink-chip/80 p-5 md:p-6 transition-all cursor-pointer" onclick="toggleFaq(this)">
+              <div class="flex items-center justify-between gap-4 select-none">
+                <span class="font-display text-base md:text-lg text-ink-50 flex items-center gap-3">
+                  <span class="font-mono text-xs text-brand font-bold bg-brand/10 border border-brand/20 px-2 py-0.5 rounded">05</span>
+                  <span>Is the liquidity pool locked and verified?</span>
+                  <span class="hidden sm:inline-block font-mono text-[9.5px] uppercase tracking-wider text-brand bg-brand/10 px-2.5 py-0.5 rounded-full border border-brand/25">100% Locked</span>
+                </span>
+                <span class="faq-chevron size-6 rounded-full border border-white/10 bg-ink-surface flex items-center justify-center text-ink-400 transition-transform duration-300 flex-none">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </div>
+              <div class="faq-answer">
+                <p class="font-sans text-sm md:text-base text-ink-400 leading-relaxed border-t border-white/5 pt-3.5">
+                  Yes, 100%. The bonding curve logic automatically locks and burns the liquidity tokens upon graduation. There are no admin mint keys, no hidden token unlock schedules, and no backdoor contract owners.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- FOOTER                                                   -->
+  <!-- ======================================================== -->
+  <footer>
+    <div class="relative overflow-hidden border-t border-white/10">
+      <!-- Full-bleed Parallax / Perspective Image -->
+      <img alt="Near Inu in Tokyo Cyber District" loading="lazy" class="absolute inset-0 h-full w-full object-cover object-[center_35%]" src="assets/footer-paralax.jpg" />
+      
+      <!-- Gradient overlay matching artificialinu.com: from-ink/90 via-ink/40 to-transparent -->
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/95 from-[5%] via-ink/50 via-[55%] to-transparent"></div>
+
+      <!-- Main Footer Content Container (aligned right, large padding) -->
+      <div class="relative flex flex-col items-end gap-6 px-6 md:px-8 py-24 sm:py-[104px] sm:pr-14 text-right">
+        
+        <!-- Live Status Pill with pulsing green dot -->
+        <div class="inline-flex items-center gap-2.5 rounded-full border border-brand/35 bg-ink/85 px-4 py-1.5 backdrop-blur-md shadow-lg">
+          <span class="h-2 w-2 rounded-full bg-brand animate-pulse-glow"></span>
+          <span class="font-mono text-[11px] font-semibold text-brand tracking-wider uppercase">NEAR SHARDING TERMINAL ACTIVE · BLOCK <span id="footerBlockNum">142,891,048</span></span>
+        </div>
+
+        <!-- Big Tagline -->
+        <h2 class="text-balance font-display text-[clamp(38px,4.6vw,66px)] leading-[0.96] tracking-[-0.025em] text-ink-50 drop-shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
+          Long compute.<br/>
+          <span class="text-brand">Ride with Near Inu.</span>
+        </h2>
+
+        <!-- Action Button Clusters (Stacked rows) -->
+        <div class="flex flex-col items-end gap-3">
+          
+          <!-- Row 1: Trade $NI & Follow on X -->
+          <div class="flex flex-wrap justify-end gap-3">
+            <!-- Trade $NI primary button -->
+            <a href="https://nearly.trade/ni-2.nearlytrade.near" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-2.5 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] bg-brand text-ink hover:bg-lime-soft hover:shadow-[0_10px_30px_rgba(0,237,151,0.35)] py-2 pr-2 pl-[24px] text-[15px] font-bold">
+              <span>Trade $NI</span>
+              <span class="relative flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-ink text-brand">
+                <svg viewBox="0 0 16 16" fill="none" class="absolute size-3.5 transition-all duration-300 ease-out group-hover:translate-x-3.5 group-hover:-translate-y-3.5 group-hover:opacity-0"><path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="absolute size-3.5 -translate-x-3.5 translate-y-3.5 opacity-0 transition-all duration-300 ease-out group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100"><path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </a>
+
+            <!-- Follow on X button -->
+            <a href="https://x.com/nearinucom" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-2.5 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] border border-brand/40 bg-ink/90 text-brand hover:bg-white/5 px-[24px] py-3 text-[15px]">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="h-3.5 w-3.5"><path d="M18.9 2H22l-7.1 8.1L23.3 22h-6.6l-5.2-6.8L5.6 22H2.4l7.6-8.7L1 2h6.8l4.7 6.2L18.9 2Zm-1.1 18h1.8L7.3 3.9H5.5L17.8 20Z"/></svg>
+              <span>Follow on X</span>
+            </a>
+
+            <!-- Telegram button -->
+            <a href="https://t.me/nearinu" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-2.5 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] border border-brand/40 bg-ink/90 text-brand hover:bg-white/5 px-[24px] py-3 text-[15px]">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"></path></svg>
+              <span>Telegram</span>
+            </a>
+          </div>
+
+          <!-- Row 2: Secondary Nav Pills (How It Works, How to Buy, FAQ, Memes, Dexscreener) -->
+          <div class="flex flex-wrap justify-end gap-3">
+            <a href="#how-it-works" class="group inline-flex items-center justify-center gap-2 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] border border-white/20 bg-ink/90 text-ink-50 hover:border-brand hover:text-brand px-[22px] py-2.5 text-[14px]">
+              How It Works
+            </a>
+            <a href="#how" class="group inline-flex items-center justify-center gap-2 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] border border-white/20 bg-ink/90 text-ink-50 hover:border-brand hover:text-brand px-[22px] py-2.5 text-[14px]">
+              How to Buy
+            </a>
+            <a href="#faq" class="group inline-flex items-center justify-center gap-2 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] border border-white/20 bg-ink/90 text-ink-50 hover:border-brand hover:text-brand px-[22px] py-2.5 text-[14px]">
+              FAQ
+            </a>
+            <a href="memes.html" class="group inline-flex items-center justify-center gap-2 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] border border-white/20 bg-ink/90 text-ink-50 hover:border-brand hover:text-brand px-[22px] py-2.5 text-[14px]">
+              <span>Memes</span>
+              <span class="rounded-full bg-brand/20 px-1.5 py-0.2 font-mono text-[10px] text-brand">Dank</span>
+            </a>
+            <a href="https://dexscreener.com/near/refv2-ni-2.nearlytrade.near:wrap.near:10000" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-2 rounded-full font-display transition-all duration-200 ease-out hover:scale-[1.03] active:scale-[0.97] border border-white/20 bg-ink/90 text-ink-50 hover:border-brand hover:text-brand px-[22px] py-2.5 text-[14px]">
+              Dexscreener
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Token Contract Cards (Exact Artificial Inu dual copy boxes with hover border glow) -->
+        <div class="mt-2 flex w-full max-w-[620px] flex-col gap-3.5 text-left">
+          
+          <!-- Card 1: $NI Token -->
+          <div class="flex flex-col gap-4 border border-white/10 bg-ink-chip/95 backdrop-blur-md px-6 py-5 sm:py-5.5 transition-all hover:border-brand/50 hover:shadow-[0_0_24px_rgba(0,237,151,0.18)] sm:flex-row sm:items-center sm:justify-between sm:gap-6 rounded-2xl">
+            <div class="flex flex-col gap-1.5 sm:min-w-44 flex-1">
+              <div class="flex items-center gap-2.5 leading-none">
+                <span class="font-display text-[20px] text-ink-50">$NI</span>
+                <span class="rounded-full bg-brand/10 border border-brand/30 px-2.5 py-0.5 font-mono text-[10px] text-brand uppercase tracking-wider font-semibold">75% NEAR REWARDS</span>
+              </div>
+              <span class="font-mono text-[11px] text-ink-500">Near Inu token · nearly.trade</span>
+            </div>
+            <span class="font-mono text-[13px] text-ink-200 truncate select-all sm:px-2">ni-2.nearlytrade.near</span>
+            <button onclick="copyText('ni-2.nearlytrade.near', this)" type="button" class="cursor-pointer flex-none self-start sm:self-auto rounded-full bg-brand px-5 py-2 font-display text-[13px] text-ink transition-all duration-200 ease-out hover:scale-[1.05] hover:bg-lime-soft active:scale-[0.95] font-bold shadow">
+              <span>Copy</span>
+            </button>
+          </div>
+
+          <!-- Card 2: $NEAR Token -->
+          <div class="flex flex-col gap-4 border border-white/10 bg-ink-chip/95 backdrop-blur-md px-6 py-5 sm:py-5.5 transition-all hover:border-brand/50 hover:shadow-[0_0_24px_rgba(0,237,151,0.18)] sm:flex-row sm:items-center sm:justify-between sm:gap-6 rounded-2xl">
+            <div class="flex flex-col gap-1.5 sm:min-w-44 flex-1">
+              <div class="flex items-center gap-2.5 leading-none">
+                <span class="font-display text-[20px] text-brand">$NEAR</span>
+                <span class="rounded-full bg-white/10 border border-white/15 px-2.5 py-0.5 font-mono text-[10px] text-ink-300 uppercase tracking-wider font-semibold">NATIVE L1</span>
+              </div>
+              <span class="font-mono text-[11px] text-ink-500">Protocol native token</span>
+            </div>
+            <span class="font-mono text-[13px] text-ink-200 truncate select-all sm:px-2">wrap.near</span>
+            <button onclick="copyText('wrap.near', this)" type="button" class="cursor-pointer flex-none self-start sm:self-auto rounded-full bg-brand px-5 py-2 font-display text-[13px] text-ink transition-all duration-200 ease-out hover:scale-[1.05] hover:bg-lime-soft active:scale-[0.95] font-bold shadow">
+              <span>Copy</span>
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between text-[11px] font-mono text-ink-500 px-1">
+            <span>*Match character-by-character on DEX router.</span>
+            <span class="text-brand">100% LP Burned & Locked</span>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Sub-footer Bottom Bar -->
+    <div class="border-t border-white/5 bg-ink py-8">
+      <div class="mx-auto w-full px-6 md:px-8 max-w-[1240px] flex flex-col gap-6">
+        
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-5 text-center font-mono text-xs text-ink-500 sm:text-left">
+          <span class="flex items-center gap-2.5">
+            <img alt="Near Inu Icon" width="24" height="24" class="block rounded-full border border-brand/50" src="assets/ni-logo.png" />
+            <span class="text-ink-300 font-semibold">© 2026 Near Inu ($NI) · Launched on NEAR</span>
+          </span>
+
+          <span class="flex flex-wrap items-center justify-center gap-5">
+            <a href="https://nearly.trade/ni-2.nearlytrade.near" target="_blank" rel="noopener noreferrer" class="hover:text-brand transition-colors">Trade $NI</a>
+            <a href="#vault" class="hover:text-brand transition-colors">Vault</a>
+            <a href="#how-it-works" class="hover:text-brand transition-colors">How It Works</a>
+            <a href="#how" class="hover:text-brand transition-colors">How to Buy</a>
+            <a href="#faq" class="hover:text-brand transition-colors">FAQ</a>
+            <a href="memes.html" class="hover:text-brand transition-colors">Memes</a>
+            <a href="https://dexscreener.com/near/refv2-ni-2.nearlytrade.near:wrap.near:10000" target="_blank" rel="noopener noreferrer" class="hover:text-brand transition-colors">Dexscreener</a>
+            <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="hover:text-brand transition-colors text-ink-400 flex items-center gap-1 cursor-pointer">
+              <span>Top ↑</span>
+            </button>
+          </span>
+        </div>
+
+        <!-- Comprehensive Disclaimer block from artificialinu.com / artificial-doge.com -->
+        <p class="border-t border-white/5 pt-5 font-mono text-[11px] leading-relaxed text-ink-600 max-w-5xl">
+          <strong class="text-ink-400">$NI is a decentralized community meme token launching on nearly.trade on NEAR Protocol.</strong> $NI has no intrinsic equity, promises, or formal investment advisory representations. A flat 4% buy and sell tax applies to transactions: 75% (3% net) is automatically distributed to token holders in native NEAR coin, and 25% (1% net) is directed to the creator for ongoing growth and ecosystem integration. Cryptocurrency trading carries capital risk. Only participate with what you can manage. The token contract address above is the single authoritative source to verify against.
+        </p>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================== -->
+  <!-- JAVASCRIPT: MODERN INTERACTIVITY & AUDIO SYNTH           -->
+  <!-- ======================================================== -->
+  <script>
+    // Modern Top Scroll Progress Bar & Floating Back to Top Button
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      const prog = document.getElementById('scrollProgress');
+      if (prog) prog.style.width = scrolled + "%";
+
+      const backToTop = document.getElementById('backToTopBtn');
+      if (backToTop) {
+        if (winScroll > 450) {
+          backToTop.classList.add('visible');
+        } else {
+          backToTop.classList.remove('visible');
+        }
+      }
+    }, { passive: true });
+
+    function scrollToTop() {
+      playCyberBeep(750, 0.08);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // FAQ Accordion Toggle Function
+    function toggleFaq(item) {
+      playCyberBeep(680, 0.05);
+      const isAlreadyActive = item.classList.contains('active');
+      document.querySelectorAll('.faq-item').forEach(el => {
+        el.classList.remove('active');
+      });
+      if (!isAlreadyActive) {
+        item.classList.add('active');
+      }
+    }
+
+    // Toast Notification Utility
+    function showToast(message) {
+      const toast = document.getElementById("toastNotification");
+      const msg = document.getElementById("toastMessage");
+      if (toast && msg) {
+        msg.innerText = message;
+        toast.classList.add("show");
+        playCyberBeep(880, 0.08);
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 2500);
+      }
+    }
+
+    // Web Audio Synthesizer: Generative Cyber Ambient Synthwave & Sound Effects
+    let audioCtx = null;
+    let soundEnabled = false;
+    let ambientMusicTimer = null;
+    let ambientDroneNodes = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) {
+          audioCtx = new AudioContext();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playCyberBeep(freq = 600, duration = 0.08, type = 'sine') {
+      if (!soundEnabled || !audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    // Continuous Generative Cyber Synthwave Music
+    const SYNTH_SCALE = [146.83, 164.81, 174.61, 196.00, 220.00, 261.63, 293.66, 329.63, 349.23, 392.00]; // D Dorian
+    let noteIndex = 0;
+
+    function startCyberAmbientMusic() {
+      if (!audioCtx || !soundEnabled) return;
+
+      try {
+        // Deep warm sub-bass drone
+        const droneOsc = audioCtx.createOscillator();
+        const droneGain = audioCtx.createGain();
+        const droneFilter = audioCtx.createBiquadFilter();
+
+        droneOsc.type = 'sawtooth';
+        droneOsc.frequency.setValueAtTime(73.42, audioCtx.currentTime); // D2 note
+
+        droneFilter.type = 'lowpass';
+        droneFilter.frequency.setValueAtTime(220, audioCtx.currentTime);
+
+        droneGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+        droneGain.gain.linearRampToValueAtTime(0.035, audioCtx.currentTime + 1.5);
+
+        droneOsc.connect(droneFilter);
+        droneFilter.connect(droneGain);
+        droneGain.connect(audioCtx.destination);
+        droneOsc.start();
+
+        ambientDroneNodes = { osc: droneOsc, gain: droneGain };
+
+        // Arpeggiated melody sequence loop
+        let step = 0;
+        ambientMusicTimer = setInterval(() => {
+          if (!soundEnabled || !audioCtx) return;
+
+          const baseFreq = SYNTH_SCALE[step % SYNTH_SCALE.length];
+          const oct = (step % 4 === 0) ? 2 : 1;
+          const freq = baseFreq * oct;
+
+          const noteOsc = audioCtx.createOscillator();
+          const noteGain = audioCtx.createGain();
+          const noteFilter = audioCtx.createBiquadFilter();
+
+          noteOsc.type = (step % 2 === 0) ? 'triangle' : 'sine';
+          noteOsc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+          noteFilter.type = 'bandpass';
+          noteFilter.frequency.setValueAtTime(freq * 1.5, audioCtx.currentTime);
+          noteFilter.Q.setValueAtTime(3, audioCtx.currentTime);
+
+          noteGain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+          noteGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.38);
+
+          noteOsc.connect(noteFilter);
+          noteFilter.connect(noteGain);
+          noteGain.connect(audioCtx.destination);
+
+          noteOsc.start();
+          noteOsc.stop(audioCtx.currentTime + 0.4);
+
+          step = (step + 1) % 16;
+        }, 220); // 136 BPM sixteenth pulse
+
+      } catch (err) {
+        console.error("Audio synth error:", err);
+      }
+    }
+
+    function stopCyberAmbientMusic() {
+      if (ambientMusicTimer) {
+        clearInterval(ambientMusicTimer);
+        ambientMusicTimer = null;
+      }
+      if (ambientDroneNodes) {
+        try {
+          ambientDroneNodes.gain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
+          ambientDroneNodes.osc.stop(audioCtx.currentTime + 0.5);
+        } catch (e) {}
+        ambientDroneNodes = null;
+      }
+    }
+
+    function toggleAmbientSound() {
+      initAudio();
+      soundEnabled = !soundEnabled;
+      const btn = document.getElementById("soundToggleBtn");
+      if (btn) {
+        if (soundEnabled) {
+          btn.classList.remove("sound-muted");
+          btn.classList.add("text-brand", "border-brand/40");
+          showToast("Cyber synthwave music playing ⚡🎶");
+          startCyberAmbientMusic();
+          playCyberBeep(750, 0.12);
+        } else {
+          btn.classList.add("sound-muted");
+          btn.classList.remove("text-brand", "border-brand/40");
+          showToast("Music muted");
+          stopCyberAmbientMusic();
+        }
+      }
+    }
+
+    // Enhanced Copy Text with Toast & Audio Feedback
+    function copyText(text, btnElement) {
+      initAudio();
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(`Copied: ${text}`);
+        const span = btnElement.querySelector('span:last-child');
+        if (span) {
+          const prev = span.innerText;
+          span.innerText = "COPIED! ✓";
+          span.classList.add("text-brand");
+          setTimeout(() => {
+            span.innerText = prev;
+            span.classList.remove("text-brand");
+          }, 2000);
+        }
+      });
+    }
+
+    // Copy direct URL to meme file
+    function copyMemeLink(fileName, btnElement) {
+      initAudio();
+      const url = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'memes/' + fileName;
+      navigator.clipboard.writeText(url).then(() => {
+        showToast(`📋 Link copied: memes/${fileName}`);
+        playCyberBeep(920, 0.08);
+        if (btnElement) {
+          btnElement.classList.add("text-brand", "border-brand");
+          setTimeout(() => {
+            btnElement.classList.remove("text-brand", "border-brand");
+          }, 1500);
+        }
+      });
+    }
+
+    // ── Live DexScreener Data ─────────────────────────────────────────
+    const DEX_PAIR_URL = 'https://api.dexscreener.com/latest/dex/pairs/near/refv2-ni-2.nearlytrade.near:wrap.near:10000';
+    let _dexData = null; // cached last fetch
+    let _activeTf = '1h';
+
+    // Chart polyline shapes per timeframe (visual only — DexScreener free API
+    // does not return per-candle OHLCV, so we keep representative curves)
+    const TF_SHAPES = {
+      '1h':  { fill: '0,110 20,105 45,115 70,100 100,85 130,90 160,70 190,75 220,60 250,65 280,45 310,48 340,30 370,35 395,15 420,10 420,130 0,130', line: '0,110 20,105 45,115 70,100 100,85 130,90 160,70 190,75 220,60 250,65 280,45 310,48 340,30 370,35 395,15 420,10' },
+      '24h': { fill: '0,120 30,115 60,118 100,95 140,88 180,92 220,64 260,58 300,38 340,42 380,20 420,8 420,130 0,130',                             line: '0,120 30,115 60,118 100,95 140,88 180,92 220,64 260,58 300,38 340,42 380,20 420,8' },
+      '7d':  { fill: '0,125 40,122 80,115 120,108 160,82 200,75 240,48 280,36 320,24 360,18 400,12 420,6 420,130 0,130',                            line: '0,125 40,122 80,115 120,108 160,82 200,75 240,48 280,36 320,24 360,18 400,12 420,6' }
+    };
+
+    async function fetchDexData() {
+      try {
+        const res  = await fetch(DEX_PAIR_URL, { cache: 'no-store' });
+        const json = await res.json();
+        const pair = json?.pair ?? (json?.pairs ?? [])[0];
+        if (!pair) return;
+        _dexData = pair;
+        applyDexData(pair, _activeTf);
+      } catch (_) { /* keep last values */ }
+    }
+
+    function fmtPrice(p) {
+      const n = parseFloat(p);
+      if (!n) return '$—';
+      // Show enough significant figures
+      if (n >= 1)     return '$' + n.toFixed(4);
+      if (n >= 0.001) return '$' + n.toFixed(6);
+      return '$' + n.toFixed(8);
+    }
+
+    function fmtChange(pct) {
+      if (pct == null) return '—';
+      const sign = pct >= 0 ? '+' : '';
+      return sign + pct.toFixed(2) + '%';
+    }
+
+    function fmtVol(v) {
+      if (!v) return '$0';
+      if (v >= 1e6) return '$' + (v / 1e6).toFixed(2) + 'M';
+      if (v >= 1e3) return '$' + (v / 1e3).toFixed(1) + 'K';
+      return '$' + Math.round(v);
+    }
+
+    function applyDexData(pair, tf) {
+      const priceUsd  = parseFloat(pair.priceUsd  ?? 0);
+      const changePct = pair.priceChange?.[tf === '7d' ? 'h24' : tf === '24h' ? 'h24' : 'h1'] ?? 0;
+      const vol       = pair.volume?.[tf === '7d' ? 'h24' : tf === '24h' ? 'h24' : 'h1'] ?? 0;
+      const liq       = pair.liquidity?.usd ?? 0;
+      const fdv       = pair.fdv ?? 0;
+
+      const priceStr  = fmtPrice(pair.priceUsd);
+      const changeStr = fmtChange(changePct);
+      const isUp      = changePct >= 0;
+
+      // Chart header price + change
+      const chartPriceEl  = document.getElementById('chartPrice');
+      const chartChangeEl = document.getElementById('chartChange');
+      if (chartPriceEl)  chartPriceEl.innerText  = priceStr;
+      if (chartChangeEl) {
+        chartChangeEl.innerText   = changeStr;
+        chartChangeEl.className   = `font-mono text-xs font-bold ml-2 px-2 py-0.5 rounded border ${isUp ? 'text-brand bg-brand/10 border-brand/20' : 'text-red-400 bg-red-400/10 border-red-400/20'}`;
+      }
+
+      // Crosshair tooltip price
+      const tpEl = document.getElementById('tooltipPrice');
+      const tvEl = document.getElementById('tooltipVol');
+      if (tpEl) tpEl.innerText = priceStr;
+      if (tvEl) tvEl.innerText = 'Vol: ' + fmtVol(vol);
+
+      // Nav price pill ($NEAR price from DexScreener is NI price;
+      // use priceNative for NEAR/NI ratio if needed — nav pill stays NEAR coin price)
+      // Chart polyline shape for selected timeframe
+      const shape = TF_SHAPES[tf] ?? TF_SHAPES['1h'];
+      const fillEl = document.getElementById('chartPolyFill');
+      const lineEl = document.getElementById('chartPolyLine');
+      if (fillEl) fillEl.setAttribute('points', shape.fill);
+      if (lineEl) lineEl.setAttribute('points', shape.line);
+
+      // Update chart footer vol label
+      const chartVolEl = document.getElementById('chartFooterVol');
+      if (chartVolEl) chartVolEl.innerText = 'Vol 24h: ' + fmtVol(pair.volume?.h24 ?? 0);
+      const chartLiqEl = document.getElementById('chartFooterLiq');
+      if (chartLiqEl) chartLiqEl.innerText = 'Liq: ' + fmtVol(liq);
+    }
+
+    function setTimeframe(tf) {
+      initAudio();
+      playCyberBeep(650, 0.05);
+      _activeTf = tf;
+
+      ['1h', '24h', '7d'].forEach(t => {
+        const btn = document.getElementById('tf' + t);
+        if (btn) {
+          btn.className = t === tf
+            ? 'tf-btn px-2 py-0.5 font-mono text-[10px] uppercase bg-brand/20 text-brand rounded transition-all font-semibold'
+            : 'tf-btn px-2 py-0.5 font-mono text-[10px] uppercase text-ink-500 hover:text-ink-300 rounded transition-all';
+        }
+      });
+
+      if (_dexData) applyDexData(_dexData, tf);
+    }
+
+    // Boot fetch + refresh every 30 s
+    fetchDexData();
+    setInterval(fetchDexData, 30000);
+
+
+
+    // ── Live Vault Stats ──────────────────────────────────────────────
+    const NEAR_RPC    = 'https://rpc.mainnet.near.org';
+    const NI_CONTRACT = 'ni-2.nearlytrade.near';
+    const TOTAL_SUPPLY = 1000000000;
+    const TAX_RATE     = 0.04;
+    const HOLDER_SHARE = 0.75;
+
+    let NEAR_PRICE = 5.82; // fallback; updated by fetchNearPrice()
+    let _lastRenderedNear = null;
+
+    // Fetch live NEAR/USD price from CoinGecko
+    async function fetchNearPrice() {
+      const ENDPOINTS = [
+        'https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd',
+        'https://api.binance.com/api/v3/ticker/price?symbol=NEARUSDT'
+      ];
+      try {
+        const res  = await fetch(ENDPOINTS[0], { cache: 'no-store' });
+        const json = await res.json();
+        if (json?.near?.usd) { NEAR_PRICE = json.near.usd; updateNavPrice(); return; }
+      } catch (_) {}
+      try {
+        const res  = await fetch(ENDPOINTS[1], { cache: 'no-store' });
+        const json = await res.json();
+        if (json?.price) { NEAR_PRICE = parseFloat(json.price); updateNavPrice(); }
+      } catch (_) {}
+    }
+
+    function updateNavPrice() {
+      const formatted = '$' + NEAR_PRICE.toFixed(2);
+      const r = document.getElementById('navNearPrice');
+      const l = document.getElementById('headerNearPrice');
+      if (r) r.innerText = formatted;
+      if (l) l.innerText = formatted;
+    }
+
+    // Fetch live contract NEAR balance from NEAR RPC
+    async function fetchVaultNearBalance() {
+      try {
+        const res  = await fetch(NEAR_RPC, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            jsonrpc: '2.0', id: 'vault', method: 'query',
+            params: { request_type: 'view_account', finality: 'final', account_id: NI_CONTRACT }
+          }),
+          cache: 'no-store'
+        });
+        const json = await res.json();
+        if (json?.result?.amount) {
+          // yoctoNEAR → NEAR  (1 NEAR = 10^24 yocto)
+          const near = Number(BigInt(json.result.amount)) / 1e24;
+          return near;
+        }
+      } catch (_) {}
+      return null;
+    }
+
+    // Animated number roll-up (from old → new over ~800ms)
+    function animateNumber(el, fromVal, toVal, decimals, prefix, suffix) {
+      if (!el) return;
+      const duration = 800;
+      const start    = performance.now();
+      const diff     = toVal - fromVal;
+      function step(now) {
+        const t   = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - t, 3); // cubic ease-out
+        const cur  = fromVal + diff * ease;
+        const fmt  = cur.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+        el.innerText = (prefix || '') + fmt + (suffix || '');
+        if (t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    function renderVaultStats(totalNear) {
+      const holderNear  = totalNear * HOLDER_SHARE;
+      const creatorNear = totalNear * (1 - HOLDER_SHARE);
+      const totalUsd    = totalNear  * NEAR_PRICE;
+      const holderUsd   = holderNear * NEAR_PRICE;
+      const creatorUsd  = creatorNear * NEAR_PRICE;
+
+      const prev = _lastRenderedNear ?? totalNear;
+      const prevH = prev * HOLDER_SHARE;
+      const prevC = prev * (1 - HOLDER_SHARE);
+      const prevU = prev * NEAR_PRICE;
+
+      // Animate headline numbers
+      animateNumber(document.getElementById('vaultNearTokens'), prev, totalNear, 4, '', '');
+
+      // USD headline — no decimals
+      const usdEl = document.getElementById('vaultTotalUsd');
+      if (usdEl) {
+        const fromUsd = prevU, toUsd = totalUsd;
+        const durMs = 800, t0 = performance.now();
+        const tick = (now) => {
+          const t = Math.min((now - t0) / durMs, 1);
+          const e = 1 - Math.pow(1 - t, 3);
+          usdEl.innerText = '$' + Math.round(fromUsd + (toUsd - fromUsd) * e).toLocaleString('en-US');
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+
+      // Holder card
+      animateNumber(document.getElementById('vaultHolderNear'), prevH, holderNear, 4, '', ' NEAR');
+      const hUsdEl = document.getElementById('vaultHolderUsd');
+      if (hUsdEl) hUsdEl.innerText = `~$${Math.round(holderUsd).toLocaleString('en-US')} Distributed`;
+
+      // Creator card
+      animateNumber(document.getElementById('vaultCreatorNear'), prevC, creatorNear, 4, '', ' NEAR');
+      const cUsdEl = document.getElementById('vaultCreatorUsd');
+      if (cUsdEl) cUsdEl.innerText = `~$${Math.round(creatorUsd).toLocaleString('en-US')} Reserved`;
+
+      // Timestamp badge — keep the inner pulsing dot span, update text node only
+      const tsEl = document.getElementById('vaultLastUpdated');
+      if (tsEl) {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        tsEl.innerHTML = `<span class="h-1.5 w-1.5 rounded-full bg-brand animate-pulse inline-block"></span> Live · NEAR RPC · ${timeStr}`;
+      }
+
+      _lastRenderedNear = totalNear;
+    }
+
+    async function refreshVault() {
+      await fetchNearPrice();
+      const bal = await fetchVaultNearBalance();
+      if (bal !== null) renderVaultStats(bal);
+    }
+
+    // Boot + refresh every 30 s
+    refreshVault();
+    setInterval(refreshVault, 30000);
+
+
+
+    function updateCalculator() {
+      const niHeld = parseFloat(document.getElementById("niSlider").value);
+      const dailyVolume = parseFloat(document.getElementById("volSlider").value);
+
+      const userShareOfSupply = niHeld / TOTAL_SUPPLY;
+      const userSharePercent = (userShareOfSupply * 100).toFixed(2);
+
+      document.getElementById("sliderNiVal").innerText = `${Number(niHeld).toLocaleString()} NI (${userSharePercent}%)`;
+      document.getElementById("sliderVolVal").innerText = `$${Number(dailyVolume).toLocaleString()} / day`;
+
+      const totalDailyTax = dailyVolume * TAX_RATE;
+      const holderDailyTax = totalDailyTax * HOLDER_SHARE;
+      const userDailyUsd = holderDailyTax * userShareOfSupply;
+      const userDailyNear = userDailyUsd / NEAR_PRICE;
+
+      const userMonthlyUsd = userDailyUsd * 30;
+      const userMonthlyNear = userDailyNear * 30;
+
+      document.getElementById("calcDailyNear").innerText = `~${userDailyNear.toFixed(2)} NEAR`;
+      document.getElementById("calcDailyUsd").innerText = `$${userDailyUsd.toFixed(2)} / day`;
+
+      document.getElementById("calcMonthlyNear").innerText = `~${userMonthlyNear.toFixed(1)} NEAR`;
+      document.getElementById("calcMonthlyUsd").innerText = `$${userMonthlyUsd.toFixed(2)} / mo`;
+
+      const estimatedTokenPrice = 0.00034;
+      const holdingValueUsd = niHeld * estimatedTokenPrice;
+      const annualYieldUsd = userDailyUsd * 365;
+      const apy = holdingValueUsd > 0 ? ((annualYieldUsd / holdingValueUsd) * 100).toFixed(0) : 0;
+      document.getElementById("calcApy").innerText = `~${Number(apy).toLocaleString()}%`;
+    }
+
+    function setNiPreset(val) {
+      initAudio();
+      playCyberBeep(700, 0.05);
+      const slider = document.getElementById("niSlider");
+      if (slider) {
+        slider.value = val;
+        updateCalculator();
+      }
+      document.querySelectorAll('#calculator .preset-pill').forEach(btn => {
+        if (btn.innerText.includes('Shrimp') && val === 1000000) btn.classList.add('active');
+        else if (btn.innerText.includes('Dolphin') && val === 10000000) btn.classList.add('active');
+        else if (btn.innerText.includes('Whale') && val === 50000000) btn.classList.add('active');
+        else if (btn.innerText.includes('Shrimp') || btn.innerText.includes('Dolphin') || btn.innerText.includes('Whale')) btn.classList.remove('active');
+      });
+    }
+
+    function setVolPreset(val) {
+      initAudio();
+      playCyberBeep(720, 0.05);
+      const slider = document.getElementById("volSlider");
+      if (slider) {
+        slider.value = val;
+        updateCalculator();
+      }
+      document.querySelectorAll('#calculator .preset-pill').forEach(btn => {
+        if (btn.innerText === '$50K' && val === 50000) btn.classList.add('active');
+        else if (btn.innerText === '$250K' && val === 250000) btn.classList.add('active');
+        else if (btn.innerText === '$1M' && val === 1000000) btn.classList.add('active');
+        else if (btn.innerText === '$50K' || btn.innerText === '$250K' || btn.innerText === '$1M') btn.classList.remove('active');
+      });
+    }
+
+    // Toggle Mobile Drawer
+    function toggleMobileMenu() {
+      const drawer = document.getElementById("mobileDrawer");
+      if (drawer) {
+        drawer.classList.toggle("hidden");
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      updateCalculator();
+
+      // Scroll reveal trigger
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed");
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll(".reveal-item").forEach(el => observer.observe(el));
+
+      // Vault stats are now live-fetched from ni-2.nearlytrade.near via NEAR RPC (see refreshVault above)
+
+      // Increment footer block number in real-time
+      let currentBlock = 142891048;
+      setInterval(() => {
+        currentBlock += 1;
+        const blockElem = document.getElementById("footerBlockNum");
+        if (blockElem) {
+          blockElem.innerText = currentBlock.toLocaleString('en-US');
+        }
+      }, 1200);
+
+      // Smooth dynamic cursor spotlight and card lighting tracking
+      const spotlight = document.getElementById("cursorSpotlight");
+      const isFinePointer = window.matchMedia("(pointer: fine)").matches;
+      if (isFinePointer) {
+        window.addEventListener("mousemove", (e) => {
+          if (spotlight) {
+            spotlight.style.left = `${e.clientX}px`;
+            spotlight.style.top = `${e.clientY}px`;
+          }
+        }, { passive: true });
+
+        document.querySelectorAll('.holo-card').forEach(card => {
+          card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+          }, { passive: true });
+        });
+      }
+
+      // Micro audio feedback on hover for primary action buttons
+      document.querySelectorAll('a.bg-brand, button.bg-brand, .preset-pill').forEach(btn => {
+        btn.addEventListener('mouseenter', () => {
+          if (soundEnabled && audioCtx) {
+            playCyberBeep(880, 0.03);
+          }
+        });
+      });
+
+      // Interactive Live Chart Crosshair & Scrubber Tooltip
+      const chartWrapper = document.getElementById("chartSvgWrapper");
+      const crosshairLine = document.getElementById("chartCrosshairLine");
+      const crosshairDot = document.getElementById("chartCrosshairDot");
+      const chartTooltip = document.getElementById("chartTooltip");
+      const tooltipPrice = document.getElementById("tooltipPrice");
+      const tooltipVol = document.getElementById("tooltipVol");
+
+      if (chartWrapper && crosshairLine && crosshairDot && chartTooltip) {
+        chartWrapper.addEventListener("mousemove", (e) => {
+          const rect = chartWrapper.getBoundingClientRect();
+          const mouseX = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+          const ratio = mouseX / rect.width;
+          const svgX = ratio * 420;
+          
+          // Interpolate approximate curve Y (110 down to 10)
+          const svgY = Math.max(8, Math.min(120, 115 - (ratio * 105) + Math.sin(ratio * 12) * 8));
+
+          crosshairLine.setAttribute("x1", svgX);
+          crosshairLine.setAttribute("x2", svgX);
+          crosshairLine.setAttribute("opacity", "1");
+
+          crosshairDot.setAttribute("cx", svgX);
+          crosshairDot.setAttribute("cy", svgY);
+          crosshairDot.setAttribute("opacity", "1");
+
+          // Scrubber tooltip position & dynamic values
+          chartTooltip.style.left = `${mouseX}px`;
+          chartTooltip.classList.add("visible");
+
+          const simPrice = (0.00220 + ratio * 0.00122).toFixed(5);
+          const simVol = Math.round(180 + ratio * 240);
+          if (tooltipPrice) tooltipPrice.innerText = `$${simPrice}`;
+          if (tooltipVol) tooltipVol.innerText = `Vol: $${simVol}K`;
+        }, { passive: true });
+
+        chartWrapper.addEventListener("mouseleave", () => {
+          crosshairLine.setAttribute("opacity", "0");
+          crosshairDot.setAttribute("opacity", "0");
+          chartTooltip.classList.remove("visible");
+        });
+      }
+    });
+  </script>
+</body>
+</html>
